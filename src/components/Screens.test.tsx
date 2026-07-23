@@ -21,6 +21,7 @@ it('win modal shows the final time, a record badge, and replays', async () => {
   render(<WinModal timeMs={90000} bestMs={90000} isRecord={true} onPlayAgain={onPlayAgain} />);
   expect(screen.getByText('1:30.0')).toBeInTheDocument();
   expect(screen.getByText(/new record/i)).toBeInTheDocument();
+  expect(screen.getByText(/best time/i)).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /play again/i }));
   expect(onPlayAgain).toHaveBeenCalled();
 });
