@@ -13,7 +13,7 @@ export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProp
       <h2>Deck cleared!</h2>
       <p className="final-time">{formatTime(timeMs)}</p>
       {isRecord && <p className="record-badge">New record! 🎉</p>}
-      {bestMs !== timeMs && <p className="best">Best time {formatTime(bestMs)}</p>}
+      <p className="best">Best time {formatTime(bestMs)}</p>
       <button type="button" className="primary-btn" onClick={onPlayAgain}>
         Play Again
       </button>

@@ -19,7 +19,7 @@ it('start screen omits best time when null', () => {
 it('win modal shows the final time, a record badge, and replays', async () => {
   const onPlayAgain = vi.fn();
   render(<WinModal timeMs={90000} bestMs={90000} isRecord={true} onPlayAgain={onPlayAgain} />);
-  expect(screen.getByText(/1:30\.0/)).toBeInTheDocument();
+  expect(screen.getByText('1:30.0')).toBeInTheDocument();
   expect(screen.getByText(/new record/i)).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /play again/i }));
   expect(onPlayAgain).toHaveBeenCalled();
