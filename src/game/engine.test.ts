@@ -114,6 +114,29 @@ it('shrinks a 15-card board back to 12 after a valid Set (no refill)', () => {
   expect(s.deck.length).toBe(remainingDeck.length); // deck untouched, no cards drawn
 });
 
+it('replaces a matched Set in place, keeping all other card positions fixed', () => {
+  const deck0 = generateDeck();
+  const board = deck0.slice(0, 12); // 12 cards; indices 0,1,2 form a valid Set
+  const rest = deck0.slice(12); // deck still has cards
+  const state: GameState = {
+    deck: rest, board, selected: [], pending: null, status: 'playing',
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+  };
+  const removed = [board[0].id, board[1].id, board[2].id];
+  let s = removed.reduce((acc, id) => selectCard(acc, id), state);
+  expect(s.pending!.valid).toBe(true);
+  s = resolve(s);
+
+  expect(s.board.length).toBe(12);
+  // Untouched cards keep their exact slots.
+  for (let i = 3; i < 12; i++) expect(s.board[i].id).toBe(board[i].id);
+  // The three cleared slots now hold freshly-dealt cards, not the removed ones.
+  for (const i of [0, 1, 2]) {
+    expect(removed).not.toContain(s.board[i].id);
+    expect(board.map((c) => c.id)).not.toContain(s.board[i].id);
+  }
+});
+
 it('hint highlights a valid Set and costs time', () => {
   const s0 = newGame(9);
   const s = useHint(s0);

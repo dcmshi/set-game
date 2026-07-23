@@ -1,11 +1,6 @@
-import type { CSSProperties } from 'react';
 import { Card } from './Card';
 import { SetSvgDefs } from './SetSvgDefs';
 import type { GameState } from '../game/engine';
-
-function columnsFor(n: number): number {
-  return Math.min(7, Math.max(3, Math.ceil(n / 3)));
-}
 
 interface BoardProps {
   state: GameState;
@@ -18,7 +13,7 @@ export function Board({ state, onSelect }: BoardProps) {
   const hinted = new Set(state.hintedIds);
 
   return (
-    <div className="board" style={{ '--cols': columnsFor(state.board.length) } as CSSProperties}>
+    <div className="board">
       <SetSvgDefs />
       {state.board.map((card) => (
         <Card

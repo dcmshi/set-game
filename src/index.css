@@ -43,6 +43,8 @@
   --gold: #96610b;
   --gold-soft: rgba(150, 97, 11, 0.18);
   --gold-btn-bg: rgba(150, 97, 11, 0.1);
+  /* Brighter, more saturated gold used for the hint highlight so it reads clearly. */
+  --hint: #e0990f;
 
   --radius-lg: 1.5rem;
   --radius-md: 1rem;
@@ -87,6 +89,7 @@
     --gold: #c98a12;
     --gold-soft: rgba(240, 180, 60, 0.22);
     --gold-btn-bg: rgba(240, 180, 60, 0.08);
+    --hint: #f2b21e;
   }
 }
 
@@ -366,7 +369,10 @@ button {
 .board {
   --board-pad: clamp(0.75rem, 2.5vw, 1.5rem);
   display: grid;
-  grid-template-columns: repeat(var(--cols, 4), 1fr);
+  /* Fixed column count keeps card size constant as the board grows/shrinks
+     (extra cards add a row rather than shrinking every card). */
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: stretch;
   gap: clamp(0.5rem, 1.6vw, 1rem);
   width: 100%;
   padding: var(--board-pad);
@@ -390,8 +396,8 @@ button {
   padding: clamp(0.4rem, 2vw, 0.75rem);
   background: linear-gradient(165deg, var(--card-bg), var(--card-bg-2));
   border: none;
-  outline: 3px solid transparent;
-  outline-offset: -3px;
+  outline: 4px solid transparent;
+  outline-offset: -4px;
   border-radius: var(--radius-md);
   cursor: pointer;
   box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 14px var(--card-shadow);
@@ -417,13 +423,18 @@ button {
 
 .card.selected {
   outline-color: var(--accent);
-  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--accent-soft), 0 10px 20px var(--card-shadow);
+  outline-width: 5px;
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.5) inset,
+    0 0 0 6px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 12px 22px var(--card-shadow);
   transform: translateY(-2px);
 }
 
 .card.hinted {
-  outline-color: var(--gold);
-  animation: deal-in var(--dur-med) var(--ease-out) both, hint-glow 1.4s ease-in-out infinite;
+  outline-color: var(--hint);
+  outline-width: 5px;
+  animation: deal-in var(--dur-med) var(--ease-out) both, hint-glow 1.2s ease-in-out infinite;
 }
 
 .card.correct {
@@ -508,10 +519,16 @@ button {
 
 @keyframes hint-glow {
   0%, 100% {
-    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--gold-soft), 0 10px 20px var(--card-shadow);
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.5) inset,
+      0 0 0 6px color-mix(in srgb, var(--hint) 55%, transparent),
+      0 10px 20px var(--card-shadow);
   }
   50% {
-    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 8px var(--gold-soft), 0 10px 20px var(--card-shadow);
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.5) inset,
+      0 0 0 10px color-mix(in srgb, var(--hint) 40%, transparent),
+      0 10px 20px var(--card-shadow);
   }
 }
 
@@ -528,6 +545,9 @@ button {
    ---------------------------------------------------------------------- */
 
 @media (max-width: 30rem) {
+  .board {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .screen {
     padding: 1.75rem 1.25rem;
   }

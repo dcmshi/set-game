@@ -93,14 +93,42 @@ export function resolve(state: GameState): GameState {
   }
 
   const remove = new Set(ids);
+  const slots: (Card | null)[] = state.board.slice();
+  const removedIdx = slots.reduce<number[]>((acc, c, i) => {
+    if (remove.has(c!.id)) acc.push(i);
+    return acc;
+  }, []);
+  const deck = state.deck.slice();
+
+  if (state.board.length > INITIAL_DEAL) {
+    // Board was over-dealt (extra cards were added because no Set was present).
+    // Shrink back toward 12 by filling each cleared slot with a card pulled from
+    // the tail, so every other card keeps its position and no new cards are dealt.
+    for (const idx of removedIdx) slots[idx] = null;
+    let donor = slots.length - 1;
+    for (const idx of removedIdx) {
+      while (donor > idx && slots[donor] === null) donor--;
+      if (donor > idx) {
+        slots[idx] = slots[donor];
+        slots[donor] = null;
+        donor--;
+      }
+    }
+  } else {
+    // Normal case: drop a fresh card into each cleared slot in place, so only the
+    // matched cards' positions change. If the deck runs dry (endgame), the slot
+    // is left empty and collapses.
+    for (const idx of removedIdx) slots[idx] = deck.length > 0 ? deck.shift()! : null;
+  }
+
   let s: GameState = {
     ...state,
-    board: state.board.filter((c) => !remove.has(c.id)),
+    board: slots.filter((c): c is Card => c !== null),
+    deck,
     selected: [],
     pending: null,
     hintedIds: [],
   };
-  if (s.board.length < INITIAL_DEAL) s = dealToBoard(s, INITIAL_DEAL);
   s = ensureSetOrDeal(s);
   if (s.deck.length === 0 && !boardHasSet(s.board)) s = { ...s, status: 'won' };
   return s;
