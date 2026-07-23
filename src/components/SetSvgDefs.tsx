@@ -1,9 +1,9 @@
 import type { Color } from '../game/cards';
 
 export const COLOR_HEX: Record<Color, string> = {
-  red: '#d7263d',
-  green: '#2a9d3f',
-  purple: '#6a2ca0',
+  red: '#c8283f',
+  green: '#1f8f4e',
+  purple: '#6b3fa0',
 };
 
 export function SetSvgDefs() {
@@ -14,11 +14,11 @@ export function SetSvgDefs() {
           <pattern
             key={c}
             id={`stripes-${c}`}
-            width="8"
-            height="8"
+            width="5"
+            height="5"
             patternUnits="userSpaceOnUse"
           >
-            <line x1="0" y1="0" x2="0" y2="8" stroke={COLOR_HEX[c]} strokeWidth="2.5" />
+            <line x1="0" y1="0" x2="0" y2="5" stroke={COLOR_HEX[c]} strokeWidth="1.75" />
           </pattern>
         ))}
       </defs>

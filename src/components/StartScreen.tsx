@@ -8,7 +8,14 @@ interface StartScreenProps {
 export function StartScreen({ bestMs, onStart }: StartScreenProps) {
   return (
     <div className="screen start-screen">
-      <h1>Set</h1>
+      <div className="brand">
+        <div className="brand-glyphs" aria-hidden="true">
+          <span className="glyph glyph-solid" />
+          <span className="glyph glyph-striped" />
+          <span className="glyph glyph-open" />
+        </div>
+        <h1>Set</h1>
+      </div>
       <p className="tagline">Clear the deck. Beat the clock.</p>
       <ul className="how-to">
         <li>Find 3 cards where each feature is all-same or all-different.</li>

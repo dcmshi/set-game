@@ -9,14 +9,17 @@ interface WinModalProps {
 
 export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProps) {
   return (
-    <div className="screen win-modal" role="dialog" aria-modal="true" aria-label="You won">
-      <h2>Deck cleared!</h2>
-      <p className="final-time">{formatTime(timeMs)}</p>
-      {isRecord && <p className="record-badge">New record! 🎉</p>}
-      <p className="best">Best time {formatTime(bestMs)}</p>
-      <button type="button" className="primary-btn" onClick={onPlayAgain}>
-        Play Again
-      </button>
+    <div className="modal-backdrop">
+      <div className="screen win-modal" role="dialog" aria-modal="true" aria-label="You won">
+        <p className="win-eyebrow">Deck cleared</p>
+        <h2>Nice run!</h2>
+        <p className="final-time">{formatTime(timeMs)}</p>
+        {isRecord && <p className="record-badge">New record! 🎉</p>}
+        <p className="best">Best time {formatTime(bestMs)}</p>
+        <button type="button" className="primary-btn" onClick={onPlayAgain}>
+          Play Again
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,74 +1,532 @@
+/* -------------------------------------------------------------------------
+   Set — visual design system
+   A card-table aesthetic: cream cardstock symbols dealt onto a felt board.
+   Light and dark are both first-class; only the "room lighting" (page and
+   felt tones) shifts between them — the cards themselves stay true cardstock.
+   ---------------------------------------------------------------------- */
+
 :root {
   color-scheme: light dark;
-  --red: #d7263d;
-  --green: #2a9d3f;
-  --purple: #6a2ca0;
-  --bg: #12141c;
-  --surface: #1e2230;
-  --text: #eef0f6;
-  --accent: #4f9dff;
+
+  /* Suit colors — shared by both themes */
+  --red: #c8283f;
+  --green: #1f8f4e;
+  --purple: #6b3fa0;
+
+  /* Light theme (default) */
+  --page-1: #eef1e9;
+  --page-2: #e3e8dc;
+  --felt-1: #3d9765;
+  --felt-2: #257049;
+  --felt-3: #164f33;
+  --felt-line: rgba(255, 255, 255, 0.14);
+
+  --card-bg: #fdfcf7;
+  --card-bg-2: #f5f2e8;
+  --card-border: #e3ddc8;
+  --card-shadow: rgba(24, 34, 26, 0.22);
+
+  --text: #1b241d;
+  --text-muted: rgba(27, 36, 29, 0.64);
+  --text-soft: rgba(27, 36, 29, 0.62);
+
+  --surface: #ffffff;
+  --surface-border: rgba(27, 36, 29, 0.1);
+  --surface-shadow: rgba(24, 34, 26, 0.16);
+
+  --accent: #2f6fed;
+  --accent-strong: #1d55c9;
+  --accent-soft: rgba(47, 111, 237, 0.16);
+  --danger-soft: rgba(200, 40, 63, 0.14);
+  --success-soft: rgba(31, 143, 78, 0.16);
+  /* Deeper amber in light mode keeps gold text at AA contrast on cream/white. */
+  --gold: #96610b;
+  --gold-soft: rgba(150, 97, 11, 0.18);
+  --gold-btn-bg: rgba(150, 97, 11, 0.1);
+
+  --radius-lg: 1.5rem;
+  --radius-md: 1rem;
+  --radius-sm: 0.6rem;
+
+  --dur-fast: 0.15s;
+  --dur-med: 0.28s;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --font-display: ui-rounded, 'SF Pro Rounded', 'Segoe UI Rounded', 'Segoe UI', system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
-* { box-sizing: border-box; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-1: #12241a;
+    --page-2: #0c1a13;
+    --felt-1: #1f6944;
+    --felt-2: #123f29;
+    --felt-3: #081f14;
+    --felt-line: rgba(255, 255, 255, 0.07);
+
+    --card-bg: #fdfcf7;
+    --card-bg-2: #f2efe3;
+    --card-border: #d9d3bd;
+    --card-shadow: rgba(0, 0, 0, 0.55);
+
+    --text: #eef1ea;
+    --text-muted: rgba(238, 241, 234, 0.68);
+    --text-soft: rgba(238, 241, 234, 0.55);
+
+    --surface: #16241b;
+    --surface-border: rgba(238, 241, 234, 0.1);
+    --surface-shadow: rgba(0, 0, 0, 0.45);
+
+    --accent: #5b9dff;
+    --accent-strong: #8ebcff;
+    --accent-soft: rgba(91, 157, 255, 0.22);
+    --danger-soft: rgba(255, 107, 129, 0.18);
+    --success-soft: rgba(70, 210, 133, 0.2);
+    /* Brighter gold reads well against the dark surfaces. */
+    --gold: #c98a12;
+    --gold-soft: rgba(240, 180, 60, 0.22);
+    --gold-btn-bg: rgba(240, 180, 60, 0.08);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: var(--bg);
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--text);
+  background:
+    radial-gradient(ellipse 120% 70% at 50% -10%, var(--page-2), transparent 60%),
+    var(--page-1);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* -------------------------------------------------------------------------
+   Screens (Start / Win)
+   ---------------------------------------------------------------------- */
+
+.screen {
+  width: 100%;
+  max-width: 28rem;
+  margin: auto;
+  padding: 2.25rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1.5rem 3rem var(--surface-shadow), 0 2px 8px var(--surface-shadow);
+  animation: rise-in var(--dur-med) var(--ease-out) both;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-glyphs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.glyph {
+  width: 0.85rem;
+  height: 1.5rem;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.glyph-solid {
+  background: var(--red);
+}
+.glyph-striped {
+  background-color: var(--card-bg);
+  background-image: repeating-linear-gradient(
+    var(--green),
+    var(--green) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
+}
+.glyph-open {
+  background: transparent;
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+}
+
+.screen h1 {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0;
+  line-height: 1;
+}
+
+.screen h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.win-eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.tagline {
+  opacity: 0.85;
+  margin: 0;
+}
+
+.how-to {
+  text-align: left;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+  padding-left: 1.3rem;
+}
+.how-to li + li {
+  margin-top: 0.25rem;
+}
+
+.best {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.primary-btn {
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.8rem 2.25rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1.25rem var(--accent-soft);
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), filter var(--dur-fast);
+}
+.primary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 0.75rem 1.5rem var(--accent-soft);
+}
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(8, 14, 10, 0.45);
+  backdrop-filter: blur(3px);
+  animation: fade-in var(--dur-med) ease-out both;
+}
+.win-modal {
+  margin: 0;
+}
+.final-time {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
   color: var(--text);
 }
-.app { min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-
-/* Screens */
-.screen {
-  max-width: 30rem; margin: auto; padding: 2rem; text-align: center;
-  display: flex; flex-direction: column; gap: 1rem; align-items: center;
+.record-badge {
+  color: var(--gold);
+  font-weight: 700;
+  margin: 0;
 }
-.screen h1 { font-size: 3rem; letter-spacing: 0.15em; margin: 0; }
-.tagline { opacity: 0.8; margin: 0; }
-.how-to { text-align: left; opacity: 0.85; line-height: 1.6; }
-.best { font-variant-numeric: tabular-nums; opacity: 0.9; }
-.primary-btn {
-  font-size: 1.1rem; padding: 0.75rem 2rem; border: none; border-radius: 999px;
-  background: var(--accent); color: white; cursor: pointer;
+
+/* -------------------------------------------------------------------------
+   Game layout
+   ---------------------------------------------------------------------- */
+
+.game {
+  width: 100%;
+  max-width: 62rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
-.primary-btn:hover { filter: brightness(1.1); }
 
-.win-modal { background: var(--surface); border-radius: 1rem; }
-.final-time { font-size: 2.5rem; font-variant-numeric: tabular-nums; margin: 0; }
-.record-badge { color: gold; font-weight: 700; margin: 0; }
+.topbar {
+  display: flex;
+  justify-content: center;
+}
 
-/* Game layout */
-.game { width: 100%; max-width: 60rem; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
-.topbar { display: flex; justify-content: center; }
-.timer { font-size: 2rem; font-variant-numeric: tabular-nums; letter-spacing: 0.05em; }
+.timer {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  padding: 0.4rem 1.4rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px var(--surface-shadow);
+}
 
-.hud { display: flex; gap: 1.5rem; align-items: center; justify-content: center; }
-.hud-item { opacity: 0.85; }
+.hud {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hud-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+.hud-item strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+}
+
 .hint-btn {
-  padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid var(--accent);
-  background: transparent; color: var(--accent); cursor: pointer;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--gold);
+  background: var(--gold-btn-bg);
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast), opacity var(--dur-fast);
 }
-.hint-btn:disabled { opacity: 0.4; cursor: default; }
+.hint-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--gold-btn-bg) 70%, var(--gold) 12%);
+}
+.hint-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
 
-/* Board */
+/* -------------------------------------------------------------------------
+   Board — a felt table the cards are dealt onto
+   ---------------------------------------------------------------------- */
+
 .board {
+  --board-pad: clamp(0.75rem, 2.5vw, 1.5rem);
   display: grid;
   grid-template-columns: repeat(var(--cols, 4), 1fr);
-  gap: 0.75rem;
+  gap: clamp(0.5rem, 1.6vw, 1rem);
+  width: 100%;
+  padding: var(--board-pad);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, var(--felt-1), var(--felt-2) 60%, var(--felt-3) 100%);
+  box-shadow: inset 0 2px 0 var(--felt-line), inset 0 0 3rem rgba(0, 0, 0, 0.25), 0 1rem 2rem var(--surface-shadow);
 }
+
+/* -------------------------------------------------------------------------
+   Card
+   ---------------------------------------------------------------------- */
+
 .card {
-  display: flex; justify-content: center; align-items: center; gap: 0.25rem;
-  aspect-ratio: 5 / 3; padding: 0.5rem;
-  background: var(--surface); border: 2px solid transparent; border-radius: 0.75rem;
-  cursor: pointer; transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.15rem, 1vw, 0.4rem);
+  aspect-ratio: 3 / 2;
+  padding: clamp(0.4rem, 2vw, 0.75rem);
+  background: linear-gradient(165deg, var(--card-bg), var(--card-bg-2));
+  border: none;
+  outline: 3px solid transparent;
+  outline-offset: -3px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 14px var(--card-shadow);
+  animation: deal-in var(--dur-med) var(--ease-out) both;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    outline-color var(--dur-fast) var(--ease-out);
 }
-.card:hover { transform: translateY(-2px); }
-.card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79, 157, 255, 0.35); }
-.card.hinted { border-color: gold; box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
-.card.correct { border-color: var(--green); box-shadow: 0 0 14px rgba(42, 157, 63, 0.7); }
-.card.wrong { border-color: var(--red); box-shadow: 0 0 14px rgba(215, 38, 61, 0.7); animation: shake 0.3s; }
-.shape { height: 3.5rem; width: auto; }
+
+.card:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 12px 22px var(--card-shadow);
+}
+
+.card:active {
+  transform: translateY(-1px) scale(1.005);
+}
+
+.card:focus-visible {
+  outline-color: var(--accent);
+}
+
+.card.selected {
+  outline-color: var(--accent);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--accent-soft), 0 10px 20px var(--card-shadow);
+  transform: translateY(-2px);
+}
+
+.card.hinted {
+  outline-color: var(--gold);
+  animation: deal-in var(--dur-med) var(--ease-out) both, hint-glow 1.4s ease-in-out infinite;
+}
+
+.card.correct {
+  outline-color: var(--green);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--success-soft), 0 10px 24px var(--card-shadow);
+  animation: pop-correct 0.4s var(--ease-out);
+}
+
+.card.wrong {
+  outline-color: var(--red);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--danger-soft), 0 10px 24px var(--card-shadow);
+  animation: shake 0.4s var(--ease-out);
+}
+
+.shape {
+  height: clamp(2rem, 6.5vw, 3.4rem);
+  width: auto;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.08));
+}
+
+/* Stagger the deal-in animation across the first couple of rows so a fresh
+   board feels dealt rather than all appearing in one flat instant. */
+.board .card:nth-child(1) { animation-delay: 0ms, 0ms; }
+.board .card:nth-child(2) { animation-delay: 20ms, 0ms; }
+.board .card:nth-child(3) { animation-delay: 40ms, 0ms; }
+.board .card:nth-child(4) { animation-delay: 60ms, 0ms; }
+.board .card:nth-child(5) { animation-delay: 80ms, 0ms; }
+.board .card:nth-child(6) { animation-delay: 100ms, 0ms; }
+.board .card:nth-child(7) { animation-delay: 120ms, 0ms; }
+.board .card:nth-child(8) { animation-delay: 140ms, 0ms; }
+.board .card:nth-child(9) { animation-delay: 160ms, 0ms; }
+.board .card:nth-child(n+10) { animation-delay: 180ms, 0ms; }
+
+/* -------------------------------------------------------------------------
+   Keyframes
+   ---------------------------------------------------------------------- */
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  20% { transform: translateX(-6px) rotate(-1deg); }
+  40% { transform: translateX(5px) rotate(1deg); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes pop-correct {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes hint-glow {
+  0%, 100% {
+    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 5px var(--gold-soft), 0 10px 20px var(--card-shadow);
+  }
+  50% {
+    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 0 0 8px var(--gold-soft), 0 10px 20px var(--card-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ---------------------------------------------------------------------- */
+
+@media (max-width: 30rem) {
+  .screen {
+    padding: 1.75rem 1.25rem;
+  }
+  .screen h1 {
+    font-size: 2.75rem;
+  }
+  .hud {
+    gap: 0.5rem;
+  }
+  .hud-item {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+  }
 }
