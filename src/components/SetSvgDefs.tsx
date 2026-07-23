@@ -14,11 +14,11 @@ export function SetSvgDefs() {
           <pattern
             key={c}
             id={`stripes-${c}`}
-            width="5"
-            height="5"
+            width="4.5"
+            height="4.5"
             patternUnits="userSpaceOnUse"
           >
-            <line x1="0" y1="0" x2="0" y2="5" stroke={COLOR_HEX[c]} strokeWidth="1.75" />
+            <line x1="0" y1="0" x2="0" y2="4.5" stroke={COLOR_HEX[c]} strokeWidth="2.1" />
           </pattern>
         ))}
       </defs>

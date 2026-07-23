@@ -32,6 +32,11 @@ function ShapeSvg({ shape, shading, color }: { shape: Shape; shading: Shading; c
           strokeWidth="4"
           strokeLinejoin="round"
           strokeLinecap="round"
+          /* The squiggle's ribbon is narrow; widen it ~20% about its center so the
+             striped fill has more room to read. non-scaling-stroke keeps the
+             outline an even weight despite the horizontal stretch. */
+          transform={shape === 'squiggle' ? 'translate(-5 0) scale(1.2 1)' : undefined}
+          vectorEffect={shape === 'squiggle' ? 'non-scaling-stroke' : undefined}
         />
       )}
     </svg>
