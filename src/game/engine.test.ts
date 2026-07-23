@@ -1,5 +1,5 @@
 import { newGame, INITIAL_DEAL, selectCard, resolve, WRONG_PENALTY_MS } from './engine';
-import type { GameState, Card } from './engine';
+import type { GameState } from './engine';
 import { boardHasSet, findAnySet } from './set';
 import { generateDeck } from './cards';
 
@@ -96,4 +96,20 @@ it('wins when the last Set clears an empty deck', () => {
   s = resolve(s);
   expect(s.board).toEqual([]);
   expect(s.status).toBe('won');
+});
+
+it('shrinks a 15-card board back to 12 after a valid Set (no refill)', () => {
+  const deck0 = generateDeck();
+  const board = deck0.slice(0, 15); // first 15 cards; indices 0,1,2 are a valid Set
+  const remainingDeck = deck0.slice(15);
+  const state: GameState = {
+    deck: remainingDeck, board, selected: [], pending: null, status: 'playing',
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+  };
+  const setIds = [board[0].id, board[1].id, board[2].id];
+  let s = setIds.reduce((acc, id) => selectCard(acc, id), state);
+  expect(s.pending!.valid).toBe(true);
+  s = resolve(s);
+  expect(s.board.length).toBe(12); // shrank from 15, did NOT refill to 15
+  expect(s.deck.length).toBe(remainingDeck.length); // deck untouched, no cards drawn
 });
