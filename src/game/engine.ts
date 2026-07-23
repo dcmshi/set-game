@@ -1,6 +1,6 @@
 import { generateDeck, makeRng, shuffle } from './cards';
 import type { Card } from './cards';
-import { boardHasSet, isSet } from './set';
+import { boardHasSet, isSet, findAnySet } from './set';
 
 export const WRONG_PENALTY_MS = 5000;
 export const HINT_PENALTY_MS = 15000;
@@ -104,4 +104,16 @@ export function resolve(state: GameState): GameState {
   s = ensureSetOrDeal(s);
   if (s.deck.length === 0 && !boardHasSet(s.board)) s = { ...s, status: 'won' };
   return s;
+}
+
+export function useHint(state: GameState): GameState {
+  if (state.status !== 'playing' || state.pending) return state;
+  const found = findAnySet(state.board);
+  if (!found) return state;
+  return {
+    ...state,
+    hintedIds: found.map((c) => c.id),
+    penaltyMs: state.penaltyMs + HINT_PENALTY_MS,
+    hintsUsed: state.hintsUsed + 1,
+  };
 }

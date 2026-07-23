@@ -1,4 +1,4 @@
-import { newGame, INITIAL_DEAL, selectCard, resolve, WRONG_PENALTY_MS } from './engine';
+import { newGame, INITIAL_DEAL, selectCard, resolve, WRONG_PENALTY_MS, useHint, HINT_PENALTY_MS } from './engine';
 import type { GameState } from './engine';
 import { boardHasSet, findAnySet } from './set';
 import { generateDeck } from './cards';
@@ -112,4 +112,21 @@ it('shrinks a 15-card board back to 12 after a valid Set (no refill)', () => {
   s = resolve(s);
   expect(s.board.length).toBe(12); // shrank from 15, did NOT refill to 15
   expect(s.deck.length).toBe(remainingDeck.length); // deck untouched, no cards drawn
+});
+
+it('hint highlights a valid Set and costs time', () => {
+  const s0 = newGame(9);
+  const s = useHint(s0);
+  expect(s.hintedIds).toHaveLength(3);
+  expect(s.penaltyMs).toBe(HINT_PENALTY_MS);
+  expect(s.hintsUsed).toBe(1);
+  const cards = s.hintedIds.map((id) => s.board.find((c) => c.id === id)!);
+  expect(findAnySet(cards)).not.toBeNull();
+});
+
+it('selecting a card clears an active hint', () => {
+  const s0 = newGame(9);
+  const hinted = useHint(s0);
+  const s = selectCard(hinted, hinted.board[0].id);
+  expect(s.hintedIds).toEqual([]);
 });
