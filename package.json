@@ -1,11 +1,7 @@
 {
   "name": "set-game",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Single-player timed Set card game",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,9 +11,10 @@
     "test:watch": "vitest"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=20.19"
+  },
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

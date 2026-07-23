@@ -4,12 +4,25 @@ import { Board } from './components/Board';
 import { Timer } from './components/Timer';
 import { Hud } from './components/Hud';
 import { WinModal } from './components/WinModal';
+import { formatTime } from './lib/format';
+
+function feedbackMessage(g: ReturnType<typeof useGame>): string {
+  if (g.screen === 'won') return `Deck cleared! Final time ${formatTime(g.displayMs)}.`;
+  if (g.state.pending) return g.state.pending.valid ? 'Set found!' : 'Not a Set. Five second penalty.';
+  if (g.state.hintedIds.length > 0) return 'Hint shown.';
+  return '';
+}
 
 export default function App({ seed }: { seed?: number }) {
   const g = useGame(seed);
+  const message = feedbackMessage(g);
 
   return (
     <div className="app">
+      <div className="sr-only" role="status" aria-live="polite">
+        {message}
+      </div>
+
       {g.screen === 'start' && <StartScreen bestMs={g.bestMs} onStart={g.start} />}
 
       {g.screen === 'playing' && (

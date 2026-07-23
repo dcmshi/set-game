@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { formatTime } from '../lib/format';
 
 interface WinModalProps {
@@ -8,6 +9,12 @@ interface WinModalProps {
 }
 
 export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProps) {
+  const playAgainRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    playAgainRef.current?.focus();
+  }, []);
+
   return (
     <div className="modal-backdrop">
       <div className="screen win-modal" role="dialog" aria-modal="true" aria-label="You won">
@@ -16,7 +23,7 @@ export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProp
         <p className="final-time">{formatTime(timeMs)}</p>
         {isRecord && <p className="record-badge">New record! 🎉</p>}
         <p className="best">Best time {formatTime(bestMs)}</p>
-        <button type="button" className="primary-btn" onClick={onPlayAgain}>
+        <button type="button" className="primary-btn" onClick={onPlayAgain} ref={playAgainRef}>
           Play Again
         </button>
       </div>

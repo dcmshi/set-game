@@ -11,10 +11,10 @@ export interface Card {
   color: Color;
 }
 
-export const COUNTS: Count[] = [1, 2, 3];
-export const SHAPES: Shape[] = ['diamond', 'squiggle', 'oval'];
-export const SHADINGS: Shading[] = ['solid', 'striped', 'open'];
-export const COLORS: Color[] = ['red', 'green', 'purple'];
+export const COUNTS: readonly Count[] = [1, 2, 3];
+export const SHAPES: readonly Shape[] = ['diamond', 'squiggle', 'oval'];
+export const SHADINGS: readonly Shading[] = ['solid', 'striped', 'open'];
+export const COLORS: readonly Color[] = ['red', 'green', 'purple'];
 
 export function cardId(c: Omit<Card, 'id'>): string {
   return `${c.count}-${c.shape}-${c.shading}-${c.color}`;
