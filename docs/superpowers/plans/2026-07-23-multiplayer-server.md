@@ -136,7 +136,7 @@ export type ServerMessage =
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "types": ["node"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["src", "../src/game/cards.ts", "../src/game/set.ts", "../src/mp/protocol.ts"]
 }
