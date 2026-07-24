@@ -1,4 +1,4 @@
-# Set — Speed Solitaire
+# Set — Speed Card Game
 
 A version of the classic card game **Set**. Play **single-player** — clear the whole
 81-card deck as fast as you can — or **multiplayer**, racing friends to grab Sets on a
