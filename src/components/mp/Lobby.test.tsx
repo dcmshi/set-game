@@ -11,7 +11,9 @@ const players: PlayerView[] = [
 
 it('shows the room code and roster, and the host can start', async () => {
   const onStart = vi.fn();
-  renderWithI18n(<Lobby code="ABCD" players={players} hostId="p1" youId="p1" isHost onStart={onStart} />);
+  renderWithI18n(
+    <Lobby code="ABCD" players={players} hostId="p1" youId="p1" isHost onStart={onStart} onLeave={() => {}} />
+  );
   expect(screen.getByText('ABCD')).toBeInTheDocument();
   expect(screen.getByText('Alice')).toBeInTheDocument();
   expect(screen.getByText('Bob')).toBeInTheDocument();
@@ -20,7 +22,18 @@ it('shows the room code and roster, and the host can start', async () => {
 });
 
 it('hides the start button for non-hosts and shows a waiting note', () => {
-  renderWithI18n(<Lobby code="ABCD" players={players} hostId="p1" youId="p2" isHost={false} onStart={() => {}} />);
+  renderWithI18n(
+    <Lobby code="ABCD" players={players} hostId="p1" youId="p2" isHost={false} onStart={() => {}} onLeave={() => {}} />
+  );
   expect(screen.queryByRole('button', { name: /start game/i })).not.toBeInTheDocument();
   expect(screen.getByText(/waiting for the host/i)).toBeInTheDocument();
+});
+
+it('fires onLeave when the leave button is clicked', async () => {
+  const onLeave = vi.fn();
+  renderWithI18n(
+    <Lobby code="ABCD" players={players} hostId="p1" youId="p1" isHost onStart={() => {}} onLeave={onLeave} />
+  );
+  await userEvent.click(screen.getByRole('button', { name: /leave/i }));
+  expect(onLeave).toHaveBeenCalled();
 });

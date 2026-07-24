@@ -8,9 +8,10 @@ interface LobbyProps {
   youId: string;
   isHost: boolean;
   onStart(): void;
+  onLeave(): void;
 }
 
-export function Lobby({ code, players, hostId, youId, isHost, onStart }: LobbyProps) {
+export function Lobby({ code, players, hostId, youId, isHost, onStart, onLeave }: LobbyProps) {
   const { t } = useT();
   const link = `${window.location.origin}/r/${code}`;
 
@@ -45,6 +46,9 @@ export function Lobby({ code, players, hostId, youId, isHost, onStart }: LobbyPr
       ) : (
         <p className="mp-waiting">{t('mp.waitingHost')}</p>
       )}
+      <button type="button" className="text-btn" onClick={onLeave}>
+        {t('mp.leave')}
+      </button>
     </div>
   );
 }

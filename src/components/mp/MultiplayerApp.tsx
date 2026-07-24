@@ -6,6 +6,7 @@ import { Lobby } from './Lobby';
 import { MpBoard } from './MpBoard';
 import { Scoreboard } from './Scoreboard';
 import { MpResults } from './MpResults';
+import { ConfirmDialog } from '../ConfirmDialog';
 import { Timer } from '../Timer';
 
 interface MultiplayerAppProps {
@@ -18,6 +19,7 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
   const { t } = useT();
   const mp = useMultiplayer(serverUrl);
   const [wrongFlash, setWrongFlash] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Flash the board red on an invalid claim.
@@ -65,6 +67,7 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
           youId={mp.you.id}
           isHost={isHost}
           onStart={mp.start}
+          onLeave={leave}
         />
       )}
 
@@ -72,6 +75,11 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
         <div className="game mp-game">
           <header className="topbar">
             <Timer ms={Math.max(0, Date.now() - mp.startedAt)} />
+            <div className="topbar-actions">
+              <button type="button" className="quit-btn" onClick={() => setConfirmLeave(true)}>
+                {t('mp.leave')}
+              </button>
+            </div>
           </header>
           <div className="mp-play">
             <MpBoard board={mp.board} lockoutUntil={mp.lockoutUntil} wrongFlash={wrongFlash} onClaim={mp.claim} />
@@ -88,6 +96,20 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
           isHost={isHost}
           onRematch={mp.rematch}
           onLeave={leave}
+        />
+      )}
+
+      {confirmLeave && (
+        <ConfirmDialog
+          title={t('qol.leaveTitle')}
+          body={t('qol.quitBodyMulti')}
+          confirmLabel={t('mp.leave')}
+          cancelLabel={t('qol.keepPlaying')}
+          onConfirm={() => {
+            setConfirmLeave(false);
+            leave();
+          }}
+          onCancel={() => setConfirmLeave(false)}
         />
       )}
     </div>
