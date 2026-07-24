@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { formatTime } from '../lib/format';
+import { useT } from '../i18n/LanguageContext';
 
 interface WinModalProps {
   timeMs: number;
@@ -9,6 +10,7 @@ interface WinModalProps {
 }
 
 export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProps) {
+  const { t } = useT();
   const playAgainRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -17,14 +19,14 @@ export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProp
 
   return (
     <div className="modal-backdrop">
-      <div className="screen win-modal" role="dialog" aria-modal="true" aria-label="You won">
-        <p className="win-eyebrow">Deck cleared</p>
-        <h2>Nice run!</h2>
+      <div className="screen win-modal" role="dialog" aria-modal="true" aria-label={t('win.dialogLabel')}>
+        <p className="win-eyebrow">{t('win.eyebrow')}</p>
+        <h2>{t('win.title')}</h2>
         <p className="final-time">{formatTime(timeMs)}</p>
-        {isRecord && <p className="record-badge">New record! 🎉</p>}
-        <p className="best">Best time {formatTime(bestMs)}</p>
+        {isRecord && <p className="record-badge">{t('win.record')}</p>}
+        <p className="best">{t('win.best', { time: formatTime(bestMs) })}</p>
         <button type="button" className="primary-btn" onClick={onPlayAgain} ref={playAgainRef}>
-          Play Again
+          {t('win.playAgain')}
         </button>
       </div>
     </div>
