@@ -8,3 +8,13 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+  - type: web
+    name: set-mp-server
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run server
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.0
