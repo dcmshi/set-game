@@ -21,6 +21,7 @@ export interface UseGame {
   paused: boolean;
   pause: () => void;
   resume: () => void;
+  quit: () => void;
 }
 
 export function useGame(seed?: number): UseGame {
@@ -100,6 +101,10 @@ export function useGame(seed?: number): UseGame {
   const hint = useCallback(() => dispatch({ type: 'HINT' }), []);
   const pause = useCallback(() => setPaused(true), []);
   const resume = useCallback(() => setPaused(false), []);
+  const quit = useCallback(() => {
+    setPaused(false);
+    setScreen('start');
+  }, []);
 
-  return { screen, state, displayMs, bestMs, isRecord, start, select, hint, paused, pause, resume };
+  return { screen, state, displayMs, bestMs, isRecord, start, select, hint, paused, pause, resume, quit };
 }

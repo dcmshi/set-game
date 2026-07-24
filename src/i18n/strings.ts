@@ -89,6 +89,13 @@ const en = {
   'mp.errNotFound': 'Room not found.',
   'mp.errFull': 'That room is full.',
   'mp.errGeneric': 'Something went wrong. Try again.',
+
+  'qol.quit': 'Quit',
+  'qol.quitTitle': 'Quit game?',
+  'qol.leaveTitle': 'Leave game?',
+  'qol.quitBodySingle': 'Your current game will be lost.',
+  'qol.quitBodyMulti': "You'll leave the room and forfeit this game.",
+  'qol.keepPlaying': 'Keep playing',
 } as const;
 
 export type StringKey = keyof typeof en;
@@ -182,6 +189,13 @@ const zh: Record<StringKey, string> = {
   'mp.errNotFound': '找不到房间。',
   'mp.errFull': '房间已满。',
   'mp.errGeneric': '出错了，请重试。',
+
+  'qol.quit': '退出',
+  'qol.quitTitle': '退出游戏？',
+  'qol.leaveTitle': '离开游戏？',
+  'qol.quitBodySingle': '当前的游戏进度将会丢失。',
+  'qol.quitBodyMulti': '你将离开房间并放弃本局游戏。',
+  'qol.keepPlaying': '继续游戏',
 };
 
 export const strings: Record<Lang, Record<StringKey, string>> = { en, zh };

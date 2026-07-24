@@ -26,6 +26,16 @@ it('exposes paused state that pause/resume toggle, reset by start', () => {
   expect(result.current.paused).toBe(false);
 });
 
+it('quit returns to the start screen and records no best time', () => {
+  const { result } = renderHook(() => useGame(1));
+  act(() => { result.current.start(); });
+  expect(result.current.screen).toBe('playing');
+  act(() => { result.current.quit(); });
+  expect(result.current.screen).toBe('start');
+  expect(result.current.paused).toBe(false);
+  expect(result.current.bestMs).toBeNull();
+});
+
 it('pauses and resumes the running clock while playing', () => {
   const pauseSpy = vi.spyOn(timer, 'pauseTimer');
   const resumeSpy = vi.spyOn(timer, 'resumeTimer');
