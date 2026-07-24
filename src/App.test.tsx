@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { newGame } from './game/engine';
@@ -47,4 +47,21 @@ it('switches to multiplayer mode without crashing (hooks-order regression)', asy
   await userEvent.click(screen.getByRole('button', { name: /play with friends/i }));
   // MultiplayerApp mounts; with a socket that never opens it shows the waking state.
   expect(screen.getByText(/waking up the server/i)).toBeInTheDocument();
+});
+
+it('quits an in-progress single-player game only after confirming', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  expect(screen.getByRole('timer')).toBeInTheDocument();
+
+  // Open the confirm, then cancel — still in the game.
+  await userEvent.click(screen.getByRole('button', { name: /quit/i }));
+  await userEvent.click(screen.getByRole('button', { name: /keep playing/i }));
+  expect(screen.getByRole('timer')).toBeInTheDocument();
+
+  // Open again and confirm — back on the start screen.
+  await userEvent.click(screen.getByRole('button', { name: /quit/i }));
+  const dialog = screen.getByRole('dialog', { name: /quit game/i });
+  await userEvent.click(within(dialog).getByRole('button', { name: /quit/i }));
+  expect(screen.getByRole('button', { name: /^start$/i })).toBeInTheDocument();
 });

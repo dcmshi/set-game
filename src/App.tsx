@@ -6,6 +6,7 @@ import { Timer } from './components/Timer';
 import { Hud } from './components/Hud';
 import { WinModal } from './components/WinModal';
 import { HowToPlay } from './components/HowToPlay';
+import { ConfirmDialog } from './components/ConfirmDialog';
 import { LanguageToggle } from './components/LanguageToggle';
 import { MultiplayerApp } from './components/mp/MultiplayerApp';
 import { useT, type I18n } from './i18n/LanguageContext';
@@ -28,6 +29,7 @@ export default function App({ seed }: { seed?: number }) {
   const g = useGame(seed);
   const { t } = useT();
   const [howToOpen, setHowToOpen] = useState(false);
+  const [confirmQuit, setConfirmQuit] = useState(false);
   const [mode, setMode] = useState<'single' | 'multi'>(DEEP_LINK ? 'multi' : 'single');
   const message = feedbackMessage(g, t);
 
@@ -69,6 +71,9 @@ export default function App({ seed }: { seed?: number }) {
           <header className="topbar">
             <Timer ms={g.displayMs} />
             <div className="topbar-actions">
+              <button type="button" className="quit-btn" onClick={() => setConfirmQuit(true)}>
+                {t('qol.quit')}
+              </button>
               <button
                 type="button"
                 className="icon-btn"
@@ -100,6 +105,20 @@ export default function App({ seed }: { seed?: number }) {
       )}
 
       {howToOpen && <HowToPlay onClose={closeHowTo} />}
+
+      {confirmQuit && (
+        <ConfirmDialog
+          title={t('qol.quitTitle')}
+          body={t('qol.quitBodySingle')}
+          confirmLabel={t('qol.quit')}
+          cancelLabel={t('qol.keepPlaying')}
+          onConfirm={() => {
+            setConfirmQuit(false);
+            g.quit();
+          }}
+          onCancel={() => setConfirmQuit(false)}
+        />
+      )}
     </div>
   );
 }
