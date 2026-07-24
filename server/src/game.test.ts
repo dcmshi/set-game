@@ -94,10 +94,12 @@ it('shrinks in place from an over-dealt 15-card board (no reshuffle, no fresh de
   for (let seed = 0; seed < 3000 && chosen < 0; seed++) {
     const probe = new MpGame();
     probe.deal(['p'], seed);
-    if (probe.board.length !== 15) continue;
+    const dealtLen: number = probe.board.length;
+    if (dealtLen !== 15) continue;
     const set = findAnySet(probe.board)!;
     probe.claim('p', [set[0].id, set[1].id, set[2].id]);
-    if (probe.board.length === 12) chosen = seed;
+    const shrunkLen: number = probe.board.length;
+    if (shrunkLen === 12) chosen = seed;
   }
   expect(chosen).toBeGreaterThanOrEqual(0);
 
