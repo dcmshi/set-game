@@ -31,14 +31,6 @@ export default function App({ seed }: { seed?: number }) {
   const [mode, setMode] = useState<'single' | 'multi'>(DEEP_LINK ? 'multi' : 'single');
   const message = feedbackMessage(g, t);
 
-  if (mode === 'multi') {
-    return (
-      <div className="app">
-        <MultiplayerApp serverUrl={MP_SERVER_URL} initialCode={DEEP_LINK} onExit={() => setMode('single')} />
-      </div>
-    );
-  }
-
   const openHowTo = useCallback(() => {
     g.pause();
     setHowToOpen(true);
@@ -47,6 +39,15 @@ export default function App({ seed }: { seed?: number }) {
     setHowToOpen(false);
     g.resume();
   }, [g]);
+
+  // All hooks are declared above this point; safe to branch on mode now.
+  if (mode === 'multi') {
+    return (
+      <div className="app">
+        <MultiplayerApp serverUrl={MP_SERVER_URL} initialCode={DEEP_LINK} onExit={() => setMode('single')} />
+      </div>
+    );
+  }
 
   return (
     <div className="app">
