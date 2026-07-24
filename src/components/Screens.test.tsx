@@ -7,7 +7,9 @@ import { WinModal } from './WinModal';
 it('start screen starts the game, shows best time, and opens how-to', async () => {
   const onStart = vi.fn();
   const onHowToPlay = vi.fn();
-  renderWithI18n(<StartScreen bestMs={65400} onStart={onStart} onHowToPlay={onHowToPlay} />);
+  renderWithI18n(
+    <StartScreen bestMs={65400} onStart={onStart} onHowToPlay={onHowToPlay} onMultiplayer={() => {}} />
+  );
   expect(screen.getByText(/1:05\.4/)).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /start/i }));
   expect(onStart).toHaveBeenCalled();
@@ -16,7 +18,9 @@ it('start screen starts the game, shows best time, and opens how-to', async () =
 });
 
 it('start screen omits best time when null', () => {
-  renderWithI18n(<StartScreen bestMs={null} onStart={() => {}} onHowToPlay={() => {}} />);
+  renderWithI18n(
+    <StartScreen bestMs={null} onStart={() => {}} onHowToPlay={() => {}} onMultiplayer={() => {}} />
+  );
   expect(screen.queryByText(/best time/i)).not.toBeInTheDocument();
 });
 

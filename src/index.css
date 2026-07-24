@@ -721,3 +721,31 @@ button {
   font-size: 0.9rem;
   line-height: 1.5;
 }
+
+/* -------------------------------------------------------------------------
+   Multiplayer
+   ---------------------------------------------------------------------- */
+.mp-app { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+.mp-field { display: flex; flex-direction: column; gap: 0.3rem; text-align: left; font-size: 0.9rem; color: var(--text-muted); width: 100%; }
+.mp-field input { font: inherit; padding: 0.55rem 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--surface); color: var(--text); text-transform: none; }
+.mp-join-divider { height: 1px; width: 100%; background: var(--surface-border); margin: 0.25rem 0; }
+.mp-error, .mp-reconnect { color: var(--red); font-weight: 600; margin: 0; }
+.mp-room-code strong { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.15em; }
+.mp-share { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+.mp-share-link { display: block; word-break: break-all; background: var(--card-bg-2); color: var(--text); padding: 0.4rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.85rem; }
+.mp-roster, .mp-scoreboard, .mp-final-scores { list-style: none; margin: 0; padding: 0; width: 100%; }
+.mp-roster li { padding: 0.3rem 0; border-bottom: 1px solid var(--surface-border); }
+.mp-tag { color: var(--text-soft); font-size: 0.8rem; }
+.mp-tag-off, .mp-off { opacity: 0.55; }
+.mp-waiting { color: var(--text-muted); font-style: italic; margin: 0; }
+.mp-play { display: flex; gap: 1rem; align-items: flex-start; width: 100%; }
+.mp-play .board { flex: 1 1 auto; }
+.mp-scoreboard { flex: 0 0 12rem; }
+.mp-scoreboard li { display: flex; justify-content: space-between; padding: 0.4rem 0.7rem; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 999px; margin-bottom: 0.4rem; }
+.mp-board-wrap { position: relative; flex: 1 1 auto; }
+.mp-board-wrap.mp-wrong { animation: shake 0.4s var(--ease-out); }
+.mp-lockout { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #fff; background: rgba(200, 40, 63, 0.45); border-radius: var(--radius-lg); backdrop-filter: blur(2px); }
+.mp-final-scores li { display: flex; justify-content: space-between; padding: 0.4rem 0.7rem; }
+.mp-final-scores .mp-winner { color: var(--gold); font-weight: 700; }
+.mp-status { text-align: center; }
+@media (max-width: 40rem) { .mp-play { flex-direction: column; } .mp-scoreboard { flex-basis: auto; width: 100%; } }

@@ -6,9 +6,10 @@ interface StartScreenProps {
   bestMs: number | null;
   onStart: () => void;
   onHowToPlay: () => void;
+  onMultiplayer: () => void;
 }
 
-export function StartScreen({ bestMs, onStart, onHowToPlay }: StartScreenProps) {
+export function StartScreen({ bestMs, onStart, onHowToPlay, onMultiplayer }: StartScreenProps) {
   const { t } = useT();
   return (
     <div className="screen start-screen">
@@ -35,6 +36,9 @@ export function StartScreen({ bestMs, onStart, onHowToPlay }: StartScreenProps) 
       </button>
       <button type="button" className="text-btn" onClick={onHowToPlay}>
         {t('start.howToPlayBtn')}
+      </button>
+      <button type="button" className="text-btn" onClick={onMultiplayer}>
+        {t('start.multiplayerBtn')}
       </button>
     </div>
   );
