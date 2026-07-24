@@ -69,6 +69,24 @@ it('treats duplicate card ids as an invalid claim (not a trivial Set)', () => {
   expect(g.claim('p1', [id, id, id]).result).toBe('invalid');
 });
 
+it('replaces matched cards in place, keeping every other card in its slot', () => {
+  const g = new MpGame();
+  g.deal(['p1'], 42);
+  const before = g.board.map((c) => c.id);
+  expect(before).toHaveLength(12); // seed 42 deals a 12-card board that contains a Set
+  const s = findAnySet(g.board)!;
+  const ids: [string, string, string] = [s[0].id, s[1].id, s[2].id];
+  const matchedIdx = new Set(ids.map((id) => before.indexOf(id)));
+  g.claim('p1', ids);
+  const after = g.board.map((c) => c.id);
+  expect(after).toHaveLength(12);
+  // Untouched cards keep their exact position; only the matched slots change.
+  before.forEach((id, i) => {
+    if (!matchedIdx.has(i)) expect(after[i]).toBe(id);
+  });
+  ids.forEach((id) => expect(after).not.toContain(id));
+});
+
 it('reports winners as all players tied for the top score', () => {
   const g = new MpGame();
   g.deal(['p1', 'p2', 'p3'], 42);

@@ -38,7 +38,10 @@ export class MpGame {
     this.lockouts = new Map();
     this.over = false;
     this.startedAt = this.now();
-    this.refill();
+    while (this.board.length < BOARD_TARGET && this.deck.length > 0) {
+      this.board.push(this.deck.pop()!);
+    }
+    this.ensureSet();
   }
 
   claim(playerId: string, cardIds: [string, string, string]): ClaimResult {
@@ -59,9 +62,37 @@ export class MpGame {
       return this.lockout(playerId, now);
     }
 
-    this.board = this.board.filter((c) => !cardIds.includes(c.id));
+    // Replace matched cards IN PLACE so every other card keeps its slot (mirrors
+    // single-player resolve — otherwise the board appears to reshuffle on a claim).
+    const idSet = new Set<string>(cardIds);
+    const slots: (Card | null)[] = this.board.slice();
+    const removedIdx: number[] = [];
+    slots.forEach((c, i) => {
+      if (c && idSet.has(c.id)) removedIdx.push(i);
+    });
+
+    if (this.board.length > BOARD_TARGET) {
+      // Over-dealt (extra cards were added because no Set was present): shrink back
+      // toward BOARD_TARGET by pulling donors from the tail, leaving other slots put.
+      for (const idx of removedIdx) slots[idx] = null;
+      let donor = slots.length - 1;
+      for (const idx of removedIdx) {
+        while (donor > idx && slots[donor] === null) donor--;
+        if (donor > idx) {
+          slots[idx] = slots[donor];
+          slots[donor] = null;
+          donor--;
+        }
+      }
+    } else {
+      // Normal case: drop a fresh card into each cleared slot in place (or leave it
+      // empty to collapse if the deck has run dry near the endgame).
+      for (const idx of removedIdx) slots[idx] = this.deck.length > 0 ? this.deck.pop()! : null;
+    }
+
+    this.board = slots.filter((c): c is Card => c !== null);
     this.scoreMap.set(playerId, (this.scoreMap.get(playerId) ?? 0) + 1);
-    this.refill();
+    this.ensureSet();
     return { result: 'ok' };
   }
 
@@ -72,19 +103,14 @@ export class MpGame {
     return entries.filter(([, s]) => s === top).map(([id]) => id);
   }
 
-  /** Fill toward BOARD_TARGET, then ensure a Set exists (dealing DEAL_STEP at a time). */
-  private refill(): void {
-    while (this.board.length < BOARD_TARGET && this.deck.length > 0) {
-      this.board.push(this.deck.pop()!);
-    }
+  /** Ensure a Set exists on the board, dealing DEAL_STEP at a time; mark over if none remain. */
+  private ensureSet(): void {
     while (!boardHasSet(this.board) && this.deck.length > 0) {
       for (let i = 0; i < DEAL_STEP && this.deck.length > 0; i++) {
         this.board.push(this.deck.pop()!);
       }
     }
-    if (this.deck.length === 0 && !boardHasSet(this.board)) {
-      this.over = true;
-    }
+    this.over = this.deck.length === 0 && !boardHasSet(this.board);
   }
 
   private lockout(playerId: string, now: number): ClaimResult {
