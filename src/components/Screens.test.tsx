@@ -1,24 +1,28 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { renderWithI18n } from '../test/renderWithI18n';
 import { StartScreen } from './StartScreen';
 import { WinModal } from './WinModal';
 
-it('start screen starts the game and shows best time when present', async () => {
+it('start screen starts the game, shows best time, and opens how-to', async () => {
   const onStart = vi.fn();
-  render(<StartScreen bestMs={65400} onStart={onStart} />);
+  const onHowToPlay = vi.fn();
+  renderWithI18n(<StartScreen bestMs={65400} onStart={onStart} onHowToPlay={onHowToPlay} />);
   expect(screen.getByText(/1:05\.4/)).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /start/i }));
   expect(onStart).toHaveBeenCalled();
+  await userEvent.click(screen.getByRole('button', { name: /how to play/i }));
+  expect(onHowToPlay).toHaveBeenCalled();
 });
 
 it('start screen omits best time when null', () => {
-  render(<StartScreen bestMs={null} onStart={() => {}} />);
-  expect(screen.queryByText(/best/i)).not.toBeInTheDocument();
+  renderWithI18n(<StartScreen bestMs={null} onStart={() => {}} onHowToPlay={() => {}} />);
+  expect(screen.queryByText(/best time/i)).not.toBeInTheDocument();
 });
 
 it('win modal shows the final time, a record badge, and replays', async () => {
   const onPlayAgain = vi.fn();
-  render(<WinModal timeMs={90000} bestMs={90000} isRecord={true} onPlayAgain={onPlayAgain} />);
+  renderWithI18n(<WinModal timeMs={90000} bestMs={90000} isRecord={true} onPlayAgain={onPlayAgain} />);
   expect(screen.getByText('1:30.0')).toBeInTheDocument();
   expect(screen.getByText(/new record/i)).toBeInTheDocument();
   expect(screen.getByText(/best time/i)).toBeInTheDocument();
@@ -27,6 +31,6 @@ it('win modal shows the final time, a record badge, and replays', async () => {
 });
 
 it('win modal hides the record badge when not a record', () => {
-  render(<WinModal timeMs={90000} bestMs={80000} isRecord={false} onPlayAgain={() => {}} />);
+  renderWithI18n(<WinModal timeMs={90000} bestMs={80000} isRecord={false} onPlayAgain={() => {}} />);
   expect(screen.queryByText(/new record/i)).not.toBeInTheDocument();
 });

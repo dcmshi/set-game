@@ -1,13 +1,20 @@
 import { formatTime } from '../lib/format';
+import { useT } from '../i18n/LanguageContext';
+import { LanguageToggle } from './LanguageToggle';
 
 interface StartScreenProps {
   bestMs: number | null;
   onStart: () => void;
+  onHowToPlay: () => void;
 }
 
-export function StartScreen({ bestMs, onStart }: StartScreenProps) {
+export function StartScreen({ bestMs, onStart, onHowToPlay }: StartScreenProps) {
+  const { t } = useT();
   return (
     <div className="screen start-screen">
+      <div className="start-topline">
+        <LanguageToggle />
+      </div>
       <div className="brand">
         <div className="brand-glyphs" aria-hidden="true">
           <span className="glyph glyph-solid" />
@@ -16,15 +23,18 @@ export function StartScreen({ bestMs, onStart }: StartScreenProps) {
         </div>
         <h1>Set</h1>
       </div>
-      <p className="tagline">Clear the deck. Beat the clock.</p>
+      <p className="tagline">{t('start.tagline')}</p>
       <ul className="how-to">
-        <li>Find 3 cards where each feature is all-same or all-different.</li>
-        <li>Wrong pick: +5s. Hint: +15s.</li>
-        <li>Empty the whole deck as fast as you can.</li>
+        <li>{t('start.rule1')}</li>
+        <li>{t('start.rule2')}</li>
+        <li>{t('start.rule3')}</li>
       </ul>
-      {bestMs !== null && <p className="best">Best time {formatTime(bestMs)}</p>}
+      {bestMs !== null && <p className="best">{t('start.best', { time: formatTime(bestMs) })}</p>}
       <button type="button" className="primary-btn" onClick={onStart}>
-        Start
+        {t('start.startBtn')}
+      </button>
+      <button type="button" className="text-btn" onClick={onHowToPlay}>
+        {t('start.howToPlayBtn')}
       </button>
     </div>
   );
