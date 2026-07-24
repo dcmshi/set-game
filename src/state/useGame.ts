@@ -18,6 +18,9 @@ export interface UseGame {
   start: () => void;
   select: (id: string) => void;
   hint: () => void;
+  paused: boolean;
+  pause: () => void;
+  resume: () => void;
 }
 
 export function useGame(seed?: number): UseGame {
@@ -26,6 +29,8 @@ export function useGame(seed?: number): UseGame {
   const [bestMs, setBestMs] = useState<number | null>(() => getBestMs());
   const [isRecord, setIsRecord] = useState(false);
   const [displayMs, setDisplayMs] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   const timerRef = useRef<TimerState>({ accumulatedMs: 0, runningSince: null });
   const penaltyRef = useRef(0);
@@ -48,17 +53,20 @@ export function useGame(seed?: number): UseGame {
     };
   }, [screen]);
 
-  // Pause the clock when the tab is hidden.
+  // Track tab visibility as state (a single source of truth drives the clock).
   useEffect(() => {
-    if (screen !== 'playing') return;
-    const onVisibility = () => {
-      timerRef.current = document.hidden
-        ? pauseTimer(timerRef.current, performance.now())
-        : resumeTimer(timerRef.current, performance.now());
-    };
+    const onVisibility = () => setHidden(document.hidden);
     document.addEventListener('visibilitychange', onVisibility);
     return () => document.removeEventListener('visibilitychange', onVisibility);
-  }, [screen]);
+  }, []);
+
+  // The clock runs only while playing, not paused (tutorial), and not hidden.
+  useEffect(() => {
+    if (screen !== 'playing') return;
+    const now = performance.now();
+    timerRef.current =
+      paused || hidden ? pauseTimer(timerRef.current, now) : resumeTimer(timerRef.current, now);
+  }, [screen, paused, hidden]);
 
   // Resolve a pending selection after a short flash.
   useEffect(() => {
@@ -84,11 +92,14 @@ export function useGame(seed?: number): UseGame {
     timerRef.current = startTimer(performance.now());
     setIsRecord(false);
     setDisplayMs(0);
+    setPaused(false);
     setScreen('playing');
   }, [seed]);
 
   const select = useCallback((id: string) => dispatch({ type: 'SELECT', id }), []);
   const hint = useCallback(() => dispatch({ type: 'HINT' }), []);
+  const pause = useCallback(() => setPaused(true), []);
+  const resume = useCallback(() => setPaused(false), []);
 
-  return { screen, state, displayMs, bestMs, isRecord, start, select, hint };
+  return { screen, state, displayMs, bestMs, isRecord, start, select, hint, paused, pause, resume };
 }
