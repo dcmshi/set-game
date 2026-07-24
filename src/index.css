@@ -562,3 +562,162 @@ button {
     font-size: 0.8rem;
   }
 }
+
+/* -------------------------------------------------------------------------
+   i18n toggle, in-game top-bar actions
+   ---------------------------------------------------------------------- */
+
+.topbar {
+  position: relative; /* actions pin to the right; timer stays centered */
+}
+
+.topbar-actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.start-topline {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--surface-shadow);
+  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast);
+}
+.icon-btn:hover {
+  transform: translateY(-1px);
+  color: var(--text);
+}
+
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--surface-shadow);
+}
+.lang-opt {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 0.35rem 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.lang-opt.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.text-btn {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+.text-btn:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------
+   How-to-Play modal
+   ---------------------------------------------------------------------- */
+
+.how-to-modal {
+  position: relative;
+  max-width: 34rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: left;
+  align-items: stretch;
+  gap: 0.85rem;
+}
+.how-to-modal h2 {
+  text-align: center;
+}
+.howto-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.howto-intro {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.6;
+}
+.howto-subtitle {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.howto-features {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.howto-features strong {
+  color: var(--text);
+}
+.howto-example {
+  border-top: 1px solid var(--surface-border);
+  padding-top: 0.75rem;
+}
+.howto-example-title {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+.howto-example-cards {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.example-card {
+  flex: 1 1 0;
+  max-width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.15rem;
+  aspect-ratio: 3 / 2;
+  padding: 0.4rem;
+  background: linear-gradient(165deg, var(--card-bg), var(--card-bg-2));
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 6px var(--card-shadow);
+}
+.howto-example-cards .shape {
+  height: clamp(1.4rem, 5vw, 2rem);
+}
+.howto-example-why {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
