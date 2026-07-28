@@ -111,6 +111,15 @@ describe('crawlable content section', () => {
     expect(first.textContent!.replace(/\s+/g, ' ').trim()).toBe('Back to game');
   });
 
+  it('scrolls smoothly, except for readers who asked for less motion', () => {
+    const css = read('./index.css');
+    expect(css).toContain('scroll-behavior: smooth');
+    // scroll-behavior is neither an animation nor a transition, so the existing
+    // reduced-motion block does not cover it — it needs its own override.
+    const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+    expect(reduced.slice(0, 400)).toContain('scroll-behavior: auto');
+  });
+
   it('is styled without needing JavaScript', () => {
     expect(read('./index.css')).toContain('#site-content');
   });
