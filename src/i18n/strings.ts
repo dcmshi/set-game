@@ -8,6 +8,7 @@ const en = {
   'start.best': 'Best time {time}',
   'start.startBtn': 'Start',
   'start.howToPlayBtn': 'How to Play',
+  'start.scrollCue': 'Rules & FAQ',
 
   'howto.title': 'How to Play',
   'howto.intro':
@@ -108,6 +109,7 @@ const zh: Record<StringKey, string> = {
   'start.best': '最佳时间 {time}',
   'start.startBtn': '开始',
   'start.howToPlayBtn': '玩法说明',
+  'start.scrollCue': '规则与常见问题',
 
   'howto.title': '玩法说明',
   'howto.intro':

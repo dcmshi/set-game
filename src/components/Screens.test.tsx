@@ -38,3 +38,11 @@ it('win modal hides the record badge when not a record', () => {
   renderWithI18n(<WinModal timeMs={90000} bestMs={80000} isRecord={false} onPlayAgain={() => {}} />);
   expect(screen.queryByText(/new record/i)).not.toBeInTheDocument();
 });
+
+it('start screen offers a cue that jumps to the rules section', () => {
+  renderWithI18n(
+    <StartScreen bestMs={null} onStart={() => {}} onHowToPlay={() => {}} onMultiplayer={() => {}} />
+  );
+  const cue = screen.getByRole('link', { name: /rules & faq/i });
+  expect(cue).toHaveAttribute('href', '#site-content');
+});

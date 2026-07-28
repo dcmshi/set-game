@@ -118,6 +118,7 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  position: relative;
 }
 
 .sr-only {
@@ -847,4 +848,42 @@ button {
    sees — is visible. React sets it to 'start' on mount. */
 html[data-app-screen]:not([data-app-screen='start']) #site-content {
   display: none;
+}
+
+/* Scroll cue — absolutely positioned against .app (min-height: 100vh) so it sits
+   at the bottom of the first viewport but still scrolls away with the page.
+   position: fixed would keep it onscreen while reading, which we don't want. */
+.scroll-cue {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-soft);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.scroll-cue:hover {
+  color: var(--text);
+}
+.scroll-cue svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: scroll-cue-bounce 1.8s var(--ease-out) infinite;
+}
+
+/* The reduced-motion block already forces animation-iteration-count: 1,
+   so this bounce stops for those users without an extra rule. */
+@keyframes scroll-cue-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(0.3rem); }
+  60% { transform: translateY(0.15rem); }
 }
