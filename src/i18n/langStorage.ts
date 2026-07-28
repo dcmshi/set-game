@@ -1,11 +1,11 @@
-import type { Lang } from './detectLang';
+import { isLang, type Lang } from './detectLang';
 
 const KEY = 'set-game:lang';
 
 export function getStoredLang(): Lang | null {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw === 'en' || raw === 'zh' ? raw : null;
+    return isLang(raw) ? raw : null;
   } catch {
     return null;
   }

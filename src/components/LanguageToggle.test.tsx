@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithI18n } from '../test/renderWithI18n';
 import { LanguageToggle } from './LanguageToggle';
 import { useT } from '../i18n/LanguageContext';
+import { LANGS } from '../i18n/detectLang';
 
 function Probe() {
   const { t } = useT();
@@ -11,13 +12,28 @@ function Probe() {
 
 beforeEach(() => localStorage.clear());
 
-it('marks EN active by default and switches to Chinese on click', async () => {
+it('offers every supported language', () => {
+  renderWithI18n(<LanguageToggle />);
+  const options = [...screen.getByRole('combobox').querySelectorAll('option')];
+  expect(options.map((o) => o.value)).toEqual([...LANGS]);
+  expect(options.map((o) => o.textContent)).toEqual(['EN', '中文', 'FR', 'ES', '日本語']);
+});
+
+it('defaults to English and retranslates the UI on selection', async () => {
   renderWithI18n(<><LanguageToggle /><Probe /></>);
-  expect(screen.getByRole('button', { name: 'EN' })).toHaveAttribute('aria-pressed', 'true');
+  const select = screen.getByRole('combobox', { name: 'Language' });
+  expect(select).toHaveValue('en');
   expect(screen.getByTestId('probe').textContent).toBe('Deck');
 
-  await userEvent.click(screen.getByRole('button', { name: '中' }));
+  await userEvent.selectOptions(select, 'ja');
+  expect(screen.getByTestId('probe').textContent).toBe('山札');
 
-  expect(screen.getByRole('button', { name: '中' })).toHaveAttribute('aria-pressed', 'true');
-  expect(screen.getByTestId('probe').textContent).toBe('牌堆');
+  await userEvent.selectOptions(screen.getByRole('combobox'), 'fr');
+  expect(screen.getByTestId('probe').textContent).toBe('Pioche');
+});
+
+it('persists the choice', async () => {
+  renderWithI18n(<LanguageToggle />);
+  await userEvent.selectOptions(screen.getByRole('combobox'), 'es');
+  expect(localStorage.getItem('set-game:lang')).toBe('es');
 });
