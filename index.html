@@ -43,6 +43,107 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <section id="site-content">
+      <h2>What is Set?</h2>
+      <p>
+        Set is a real-time pattern-recognition card game played with a special 81-card deck.
+        Every card shows one, two, or three identical symbols, and each card is defined by four
+        features: number, shape, shading, and color. The deck contains exactly one card for
+        every possible combination — three options for each of the four features, so
+        3 × 3 × 3 × 3 = 81 cards, with no duplicates.
+      </p>
+
+      <h2>How to play Set</h2>
+      <h3>The four features</h3>
+      <ul>
+        <li><strong>Number</strong> — 1, 2, or 3 symbols</li>
+        <li><strong>Shape</strong> — diamond, squiggle, or oval</li>
+        <li><strong>Shading</strong> — solid, striped, or open (outline)</li>
+        <li><strong>Color</strong> — red, green, or purple</li>
+      </ul>
+      <h3>What makes a valid Set</h3>
+      <p>
+        Three cards form a Set when, for each of the four features, the three cards are either
+        all the same or all different. The features are judged independently: number can be all
+        different while color is all the same, and the Set is still valid. If even one feature
+        has two cards matching and a third that doesn't, it is not a Set.
+      </p>
+      <h3>A worked example</h3>
+      <p>
+        <strong>A valid Set:</strong> one red solid diamond, two green solid diamonds, three
+        purple solid diamonds. Number is all different (1, 2, 3). Color is all different (red,
+        green, purple). Shape is all the same (diamond). Shading is all the same (solid). Every
+        feature passes, so this is a Set.
+      </p>
+      <p>
+        <strong>Not a Set:</strong> one red solid diamond, two red solid diamonds, three green
+        solid diamonds. Number is all different, and shape and shading are all the same — but
+        the colors are red, red, green. Two the same and one different fails the rule, so these
+        three cards are not a Set.
+      </p>
+
+      <h2>Single-player and multiplayer</h2>
+      <p>
+        In single-player, you clear the entire 81-card deck against the clock. A wrong pick adds
+        5 seconds to your time and a hint adds 15, so speed and accuracy both matter. Your best
+        time is saved in your browser.
+      </p>
+      <p>
+        In multiplayer, up to about twelve players share one live board and race to claim Sets.
+        The first player to select a valid Set claims it, and those cards disappear for everyone
+        at once; a wrong pick locks that player out for 5 seconds. When the deck is cleared, the
+        highest score wins. Create a room, then share the room code or link to invite friends.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <div id="site-faq">
+        <h3>Is this version of Set free?</h3>
+        <p>Yes. The game runs entirely in your browser, it is free, and there are no ads or accounts.</p>
+
+        <h3>Do I need to sign up or install anything?</h3>
+        <p>
+          No. Open the page and press Start. Multiplayer needs nothing more than a room code
+          shared with your friends.
+        </p>
+
+        <h3>How many cards are in a Set deck?</h3>
+        <p>
+          81 — one card for every possible combination of the four features, each with three
+          possible values (3⁴ = 81).
+        </p>
+
+        <h3>Is there always a Set on the board?</h3>
+        <p>
+          In this version, yes. If the cards on the board contain no valid Set, three more are
+          dealt automatically until one exists, so you are never stuck.
+        </p>
+
+        <h3>Can I play Set online with friends?</h3>
+        <p>
+          Yes. Choose Play with Friends, create a room, and share the four-letter room code or
+          its link. Everyone plays the same board in real time.
+        </p>
+
+        <h3>Does it work on a phone?</h3>
+        <p>
+          Yes. The board and controls adapt to small screens, so you can play on a phone or
+          tablet in the browser.
+        </p>
+
+        <h3>What do the time penalties mean?</h3>
+        <p>
+          In single-player, an incorrect trio adds 5 seconds to your clock and using a hint adds
+          15 seconds. Your final time is your elapsed time plus penalties.
+        </p>
+      </div>
+
+      <p class="site-content-note">
+        This is a free fan-made implementation of the card game Set. It is not affiliated with
+        or endorsed by the game's publisher.
+      </p>
+    </section>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

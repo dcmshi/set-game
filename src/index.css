@@ -798,3 +798,48 @@ button {
   transform: translateY(-1px);
   filter: brightness(1.08);
 }
+
+/* -------------------------------------------------------------------------
+   #site-content — static, crawlable page copy that lives in index.html rather
+   than React, so it is present in the served source before any JS runs.
+   Sits below the app (which is min-height: 100vh), so it is below the fold.
+   ---------------------------------------------------------------------- */
+#site-content {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+#site-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2.5rem 0 0.75rem;
+}
+#site-content h2:first-of-type {
+  margin-top: 0;
+}
+#site-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.4rem;
+}
+#site-content p {
+  margin: 0 0 0.9rem;
+}
+#site-content ul {
+  margin: 0 0 0.9rem;
+  padding-left: 1.25rem;
+}
+#site-content li {
+  margin-bottom: 0.3rem;
+}
+#site-content .site-content-note {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--surface-border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

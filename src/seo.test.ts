@@ -72,3 +72,39 @@ describe('index.html head metadata', () => {
     expect(guard).toContain("location.pathname !== '/'");
   });
 });
+
+describe('crawlable content section', () => {
+  it('exists in the served HTML, outside the React root', () => {
+    const doc = html();
+    const section = doc.querySelector('#site-content');
+    expect(section).not.toBeNull();
+    expect(doc.querySelector('#root')!.contains(section!)).toBe(false);
+  });
+
+  it('covers the four topic areas and keeps a single h1 for the app', () => {
+    const doc = html();
+    const h2s = [...doc.querySelectorAll('#site-content h2')].map((h) => h.textContent!.trim());
+    expect(h2s).toEqual([
+      'What is Set?',
+      'How to play Set',
+      'Single-player and multiplayer',
+      'Frequently asked questions',
+    ]);
+    expect(doc.querySelectorAll('#site-content h1')).toHaveLength(0);
+  });
+
+  it('asks seven FAQ questions, each with an answer', () => {
+    const faq = html().querySelector('#site-faq')!;
+    expect(faq.querySelectorAll('h3')).toHaveLength(7);
+    expect(faq.querySelectorAll('h3 + p')).toHaveLength(7);
+  });
+
+  it('states that it is an unofficial implementation', () => {
+    const note = html().querySelector('#site-content .site-content-note')!.textContent!;
+    expect(note.replace(/\s+/g, ' ')).toMatch(/not affiliated with or endorsed by/i);
+  });
+
+  it('is styled without needing JavaScript', () => {
+    expect(read('./index.css')).toContain('#site-content');
+  });
+});
