@@ -104,6 +104,13 @@ describe('crawlable content section', () => {
     expect(note.replace(/\s+/g, ' ')).toMatch(/not affiliated with or endorsed by/i);
   });
 
+  it('opens with a link back to the game', () => {
+    const first = html().querySelector('#site-content')!.firstElementChild!;
+    expect(first.tagName).toBe('A');
+    expect(first.getAttribute('href')).toBe('#root');
+    expect(first.textContent!.replace(/\s+/g, ' ').trim()).toBe('Back to game');
+  });
+
   it('is styled without needing JavaScript', () => {
     expect(read('./index.css')).toContain('#site-content');
   });
