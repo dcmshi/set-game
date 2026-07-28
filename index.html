@@ -3,7 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Set — Speed Card Game</title>
+    <title>Play Set Online — Free Speed Card Game, Solo or Multiplayer</title>
+    <meta name="description" content="Play Set free in your browser. Race the clock to clear all 81 cards solo, or challenge friends to grab Sets on a shared board in real time. No signup." />
+    <link rel="canonical" href="https://set-game-qn3r.onrender.com/" />
+    <meta name="theme-color" content="#6a2ca0" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Set — Speed Card Game" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Play Set Online — Free Speed Card Game, Solo or Multiplayer" />
+    <meta property="og:description" content="Play Set free in your browser. Race the clock to clear all 81 cards solo, or challenge friends to grab Sets on a shared board in real time. No signup." />
+    <meta property="og:url" content="https://set-game-qn3r.onrender.com/" />
+    <meta property="og:image" content="https://set-game-qn3r.onrender.com/og-image.png" />
+    <meta property="og:image:width" content="1960" />
+    <meta property="og:image:height" content="1480" />
+    <meta property="og:image:alt" content="The Set start screen, showing the game logo and rules summary" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Play Set Online — Free Speed Card Game, Solo or Multiplayer" />
+    <meta name="twitter:description" content="Play Set free in your browser. Race the clock to clear all 81 cards solo, or challenge friends to grab Sets on a shared board in real time. No signup." />
+    <meta name="twitter:image" content="https://set-game-qn3r.onrender.com/og-image.png" />
+
+    <!--
+      The Render SPA rewrite serves this file with a 200 for every path, so any
+      URL other than / is a duplicate of the homepage. The canonical above
+      collapses them; this marks room links (/r/CODE) and typos noindex.
+      Googlebot runs JS and honours a JS-injected noindex. Note robots.txt does
+      NOT disallow these paths — a blocked crawl would never read this tag.
+    -->
+    <script>
+      if (location.pathname !== '/') {
+        document.head.appendChild(
+          Object.assign(document.createElement('meta'), { name: 'robots', content: 'noindex' })
+        );
+      }
+    </script>
+
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L30 16 L16 30 L2 16 Z' fill='%236a2ca0'/%3E%3C/svg%3E" />
   </head>
   <body>
