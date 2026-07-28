@@ -142,3 +142,8 @@ describe('structured data', () => {
     }
   });
 });
+
+it('hides the static copy once the app leaves the start screen', () => {
+  const css = read('./index.css').replace(/\s+/g, ' ');
+  expect(css).toContain("html[data-app-screen]:not([data-app-screen='start']) #site-content");
+});

@@ -65,3 +65,10 @@ it('quits an in-progress single-player game only after confirming', async () => 
   await userEvent.click(within(dialog).getByRole('button', { name: /quit/i }));
   expect(screen.getByRole('button', { name: /^start$/i })).toBeInTheDocument();
 });
+
+it('tracks the current screen on the root element so static copy can hide', async () => {
+  render(<App seed={5} />);
+  expect(document.documentElement.dataset.appScreen).toBe('start');
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  expect(document.documentElement.dataset.appScreen).toBe('playing');
+});

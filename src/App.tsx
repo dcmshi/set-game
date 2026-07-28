@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useGame } from './state/useGame';
 import { StartScreen } from './components/StartScreen';
 import { Board } from './components/Board';
@@ -41,6 +41,16 @@ export default function App({ seed }: { seed?: number }) {
     setHowToOpen(false);
     g.resume();
   }, [g]);
+
+  // Mirror the current screen onto <html> so the static #site-content section in
+  // index.html (which React does not own) can hide itself while a game is on.
+  useEffect(() => {
+    const el = document.documentElement;
+    el.dataset.appScreen = mode === 'multi' ? 'multi' : g.screen;
+    return () => {
+      delete el.dataset.appScreen;
+    };
+  }, [mode, g.screen]);
 
   // All hooks are declared above this point; safe to branch on mode now.
   if (mode === 'multi') {

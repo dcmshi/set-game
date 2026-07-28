@@ -843,3 +843,8 @@ button {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+/* Absent before JS runs, so the default — and what a non-rendering crawler
+   sees — is visible. React sets it to 'start' on mount. */
+html[data-app-screen]:not([data-app-screen='start']) #site-content {
+  display: none;
+}
