@@ -40,6 +40,88 @@
     </script>
 
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L30 16 L16 30 L2 16 Z' fill='%236a2ca0'/%3E%3C/svg%3E" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "VideoGame",
+            "name": "Set — Speed Card Game",
+            "url": "https://set-game-qn3r.onrender.com/",
+            "description": "A free browser version of the card game Set. Clear all 81 cards solo against the clock, or race friends on a shared board in real time.",
+            "genre": ["Puzzle", "Card game"],
+            "gamePlatform": "Web browser",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any (web browser)",
+            "playMode": ["SinglePlayer", "MultiPlayer"],
+            "inLanguage": ["en", "zh-Hans"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this version of Set free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The game runs entirely in your browser, it is free, and there are no ads or accounts."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need to sign up or install anything?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Open the page and press Start. Multiplayer needs nothing more than a room code shared with your friends."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many cards are in a Set deck?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "81 — one card for every possible combination of the four features, each with three possible values (3⁴ = 81)."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is there always a Set on the board?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "In this version, yes. If the cards on the board contain no valid Set, three more are dealt automatically until one exists, so you are never stuck."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I play Set online with friends?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Choose Play with Friends, create a room, and share the four-letter room code or its link. Everyone plays the same board in real time."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work on a phone?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The board and controls adapt to small screens, so you can play on a phone or tablet in the browser."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What do the time penalties mean?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "In single-player, an incorrect trio adds 5 seconds to your clock and using a hint adds 15 seconds. Your final time is your elapsed time plus penalties."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

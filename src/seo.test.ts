@@ -108,3 +108,37 @@ describe('crawlable content section', () => {
     expect(read('./index.css')).toContain('#site-content');
   });
 });
+
+const jsonLd = () => {
+  const el = html().querySelector('script[type="application/ld+json"]')!;
+  return JSON.parse(el.textContent!) as { '@graph': Record<string, any>[] };
+};
+const node = (type: string) => jsonLd()['@graph'].find((n) => n['@type'] === type)!;
+
+describe('structured data', () => {
+  it('parses as valid JSON-LD with a @graph', () => {
+    expect(jsonLd()['@graph']).toBeInstanceOf(Array);
+  });
+
+  it('describes the game as a free, browser-based VideoGame', () => {
+    const g = node('VideoGame');
+    expect(g.url).toBe(SITE_URL);
+    expect(g.playMode).toEqual(['SinglePlayer', 'MultiPlayer']);
+    expect(g.gamePlatform).toBe('Web browser');
+    expect(g.offers.price).toBe('0');
+  });
+
+  // Google requires structured data to reflect what users actually see.
+  // This is the guard that stops the JSON-LD and the visible copy diverging.
+  it('mirrors the visible FAQ exactly', () => {
+    const visible = [...html().querySelectorAll('#site-faq h3')].map((h) => h.textContent!.trim());
+    const structured = node('FAQPage').mainEntity.map((q: { name: string }) => q.name);
+    expect(structured).toEqual(visible);
+  });
+
+  it('gives every FAQ entry a non-empty answer', () => {
+    for (const q of node('FAQPage').mainEntity) {
+      expect(q.acceptedAnswer.text.length).toBeGreaterThan(20);
+    }
+  });
+});
