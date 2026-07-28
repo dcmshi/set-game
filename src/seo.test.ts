@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { LANGS } from './i18n/detectLang';
 
 const SITE_URL = 'https://set-game-qn3r.onrender.com/';
 // The path must stay a variable: Vite statically rewrites a literal
@@ -142,6 +143,12 @@ describe('structured data', () => {
     expect(g.playMode).toEqual(['SinglePlayer', 'MultiPlayer']);
     expect(g.gamePlatform).toBe('Web browser');
     expect(g.offers.price).toBe('0');
+  });
+
+  // Adding a language to the UI must not leave the structured data behind.
+  it('declares every language the UI actually ships in', () => {
+    const declared = (node('VideoGame').inLanguage as string[]).map((tag) => tag.split('-')[0]);
+    expect(declared.sort()).toEqual([...LANGS].sort());
   });
 
   // Google requires structured data to reflect what users actually see.
