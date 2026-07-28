@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://set-game-qn3r.onrender.com/sitemap.xml
