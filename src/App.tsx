@@ -8,6 +8,7 @@ import { WinModal } from './components/WinModal';
 import { HowToPlay } from './components/HowToPlay';
 import { ConfirmDialog } from './components/ConfirmDialog';
 import { LanguageToggle } from './components/LanguageToggle';
+import { SetSvgDefs } from './components/SetSvgDefs';
 import { MultiplayerApp } from './components/mp/MultiplayerApp';
 import { useT, type I18n } from './i18n/LanguageContext';
 import { formatTime } from './lib/format';
@@ -53,9 +54,12 @@ export default function App({ seed }: { seed?: number }) {
   }, [mode, g.screen]);
 
   // All hooks are declared above this point; safe to branch on mode now.
+  // SetSvgDefs lives here rather than in each board/modal so the #stripes-*
+  // pattern ids stay unique no matter what is on screen.
   if (mode === 'multi') {
     return (
       <div className="app">
+        <SetSvgDefs />
         <MultiplayerApp serverUrl={MP_SERVER_URL} initialCode={DEEP_LINK} onExit={() => setMode('single')} />
       </div>
     );
@@ -63,6 +67,7 @@ export default function App({ seed }: { seed?: number }) {
 
   return (
     <div className="app">
+      <SetSvgDefs />
       <div className="sr-only" role="status" aria-live="polite">
         {message}
       </div>

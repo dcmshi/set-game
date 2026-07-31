@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useT } from '../i18n/LanguageContext';
-import { SetSvgDefs } from './SetSvgDefs';
 import { CardFace } from './CardFace';
 import { cardId, type Card } from '../game/cards';
 
@@ -72,7 +71,6 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
         aria-label={t('howto.title')}
         onClick={(e) => e.stopPropagation()}
       >
-        <SetSvgDefs />
         <button
           type="button"
           className="howto-close"

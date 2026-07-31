@@ -66,6 +66,20 @@ it('quits an in-progress single-player game only after confirming', async () => 
   expect(screen.getByRole('button', { name: /^start$/i })).toBeInTheDocument();
 });
 
+// Duplicate ids are invalid HTML, and which #stripes-red a shape resolves to
+// would then depend on document order.
+it('defines each stripe pattern once, even with the how-to modal over the board', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  expect(document.querySelectorAll('#stripes-red')).toHaveLength(1);
+
+  await userEvent.click(screen.getByRole('button', { name: /how to play/i }));
+  expect(screen.getByRole('dialog', { name: /how to play/i })).toBeInTheDocument();
+  expect(document.querySelectorAll('#stripes-red')).toHaveLength(1);
+  expect(document.querySelectorAll('#stripes-green')).toHaveLength(1);
+  expect(document.querySelectorAll('#stripes-purple')).toHaveLength(1);
+});
+
 it('tracks the current screen on the root element so static copy can hide', async () => {
   render(<App seed={5} />);
   expect(document.documentElement.dataset.appScreen).toBe('start');

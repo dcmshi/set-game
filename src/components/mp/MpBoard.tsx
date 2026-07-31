@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Card } from '../Card';
-import { SetSvgDefs } from '../SetSvgDefs';
 import { useT } from '../../i18n/LanguageContext';
 import type { Card as CardModel } from '../../game/cards';
 
@@ -45,7 +44,6 @@ export function MpBoard({ board, lockoutUntil, wrongFlash, onClaim }: MpBoardPro
   return (
     <div className={`mp-board-wrap${wrongFlash ? ' mp-wrong' : ''}`}>
       <div className="board">
-        <SetSvgDefs />
         {board.map((card) => (
           <Card
             key={card.id}

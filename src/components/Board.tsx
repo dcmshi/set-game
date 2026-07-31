@@ -1,5 +1,4 @@
 import { Card } from './Card';
-import { SetSvgDefs } from './SetSvgDefs';
 import type { GameState } from '../game/engine';
 
 interface BoardProps {
@@ -14,7 +13,6 @@ export function Board({ state, onSelect }: BoardProps) {
 
   return (
     <div className="board">
-      <SetSvgDefs />
       {state.board.map((card) => (
         <Card
           key={card.id}
