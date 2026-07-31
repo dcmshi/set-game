@@ -326,6 +326,7 @@ button {
 .topbar {
   display: flex;
   justify-content: center;
+  position: relative; /* the actions pin to the right; the timer stays centred */
 }
 
 .timer {
@@ -632,10 +633,6 @@ button {
 /* -------------------------------------------------------------------------
    i18n toggle, in-game top-bar actions
    ---------------------------------------------------------------------- */
-
-.topbar {
-  position: relative; /* actions pin to the right; timer stays centered */
-}
 
 .topbar-actions {
   position: absolute;

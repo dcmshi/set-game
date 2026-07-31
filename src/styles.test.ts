@@ -114,6 +114,14 @@ describe('suit colours', () => {
 });
 
 describe('in-game top bar', () => {
+  it('is described by a single .topbar rule', () => {
+    expect(bodiesIn(topLevel(), '.topbar')).toHaveLength(1);
+    expect(body('.topbar')).toMatch(/display:\s*flex/);
+    expect(body('.topbar')).toMatch(/justify-content:\s*center/);
+    // The actions are positioned against it, so it has to be a containing block.
+    expect(body('.topbar')).toMatch(/position:\s*relative/);
+  });
+
   it('pins the actions beside the centred timer on a wide viewport', () => {
     expect(body('.topbar-actions')).toMatch(/position:\s*absolute/);
   });
