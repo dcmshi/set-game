@@ -38,6 +38,9 @@ const en = {
 
   'timer.aria': 'elapsed time',
 
+  /* Appended to a hinted card's label — the highlight itself is colour-only. */
+  'card.hinted': 'hinted',
+
   'win.eyebrow': 'Deck cleared',
   'win.title': 'Nice run!',
   'win.record': 'New record! 🎉',
@@ -138,6 +141,7 @@ const zh: Record<StringKey, string> = {
   'lang.groupAria': '语言',
 
   'timer.aria': '已用时间',
+  'card.hinted': '已提示',
 
   'win.eyebrow': '牌堆已清空',
   'win.title': '干得漂亮！',
@@ -238,6 +242,7 @@ const fr: Record<StringKey, string> = {
   'lang.groupAria': 'Langue',
 
   'timer.aria': 'temps écoulé',
+  'card.hinted': 'indice',
 
   'win.eyebrow': 'Pioche vidée',
   'win.title': 'Belle partie !',
@@ -338,6 +343,7 @@ const es: Record<StringKey, string> = {
   'lang.groupAria': 'Idioma',
 
   'timer.aria': 'tiempo transcurrido',
+  'card.hinted': 'pista',
 
   'win.eyebrow': 'Mazo vaciado',
   'win.title': '¡Buena partida!',
@@ -437,6 +443,7 @@ const ja: Record<StringKey, string> = {
   'lang.groupAria': '言語',
 
   'timer.aria': '経過時間',
+  'card.hinted': 'ヒント',
 
   'win.eyebrow': '山札を空にしました',
   'win.title': 'お見事！',

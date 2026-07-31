@@ -43,6 +43,20 @@ it('pluralises Spanish with a trailing -s', () => {
   );
 });
 
+// A hinted card is otherwise conveyed by colour alone, so the label has to say
+// it. CJK scripts join with their own full-width comma rather than ", ".
+it('marks a hinted card in every language', () => {
+  expect(cardAriaLabel(c, 'en', true)).toBe('2 striped red diamonds, hinted');
+  expect(cardAriaLabel(c, 'zh', true)).toBe('2个红色条纹菱形，已提示');
+  expect(cardAriaLabel(c, 'fr', true)).toBe('2 losanges rouges hachurés, indice');
+  expect(cardAriaLabel(c, 'es', true)).toBe('2 rombos rojos rayados, pista');
+  expect(cardAriaLabel(c, 'ja', true)).toBe('2個の赤の縞模様のひし形、ヒント');
+});
+
+it('leaves an un-hinted label exactly as it was', () => {
+  expect(cardAriaLabel(c, 'en', false)).toBe(cardAriaLabel(c, 'en'));
+});
+
 it('builds Japanese labels with a counter and no plural', () => {
   expect(cardAriaLabel(c, 'ja')).toBe('2個の赤の縞模様のひし形');
   expect(cardAriaLabel(card({ count: 1 }), 'ja')).toBe('1個の赤の縞模様のひし形');

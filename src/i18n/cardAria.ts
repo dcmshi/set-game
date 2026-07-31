@@ -2,13 +2,26 @@ import { strings } from './strings';
 import type { Lang } from './detectLang';
 import type { Card } from '../game/cards';
 
+/** CJK scripts join clauses with their own full-width comma and no space. */
+const HINT_SEPARATOR: Record<Lang, string> = {
+  en: ', ',
+  fr: ', ',
+  es: ', ',
+  zh: '，',
+  ja: '、',
+};
+
 /**
  * Screen-reader label for a card. Each language inflects differently — plural
  * suffixes, gender agreement, measure words — so every language owns a
  * formatter instead of sharing one with branches in it.
+ *
+ * `hinted` appends the hint marker, because the hint itself is conveyed by
+ * outline colour and a glow that a screen reader cannot see.
  */
-export function cardAriaLabel(card: Card, lang: Lang): string {
-  return FORMATTERS[lang](card);
+export function cardAriaLabel(card: Card, lang: Lang, hinted = false): string {
+  const label = FORMATTERS[lang](card);
+  return hinted ? label + HINT_SEPARATOR[lang] + strings[lang]['card.hinted'] : label;
 }
 
 type Formatter = (card: Card) => string;

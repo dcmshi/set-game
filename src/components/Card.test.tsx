@@ -22,6 +22,11 @@ it('reflects selected state via aria-pressed and fires onSelect', async () => {
   expect(onSelect).toHaveBeenCalledWith('2-diamond-striped-red');
 });
 
+it('says in its label that it is hinted', () => {
+  render(<Card card={card} selected={false} hinted={true} feedback={null} onSelect={() => {}} />);
+  expect(screen.getByRole('button', { name: '2 striped red diamonds, hinted' })).toBeInTheDocument();
+});
+
 it('builds a singular label for a single shape', () => {
   expect(ariaLabel({ ...card, count: 1 })).toBe('1 striped red diamond');
 });

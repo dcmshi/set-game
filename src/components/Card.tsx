@@ -32,7 +32,7 @@ export function Card({ card, selected, hinted, feedback, onSelect }: CardProps) 
     <button
       type="button"
       className={classes}
-      aria-label={cardAriaLabel(card, lang)}
+      aria-label={cardAriaLabel(card, lang, hinted)}
       aria-pressed={selected}
       onClick={() => onSelect(card.id)}
     >
