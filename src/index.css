@@ -571,6 +571,17 @@ button {
     padding: 0.4rem 0.7rem;
     font-size: 0.8rem;
   }
+  /* The actions are ~10rem wide; pinned right of a centred timer they overlap
+     the timer pill at this width, so let them drop onto their own line. */
+  .topbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .topbar-actions {
+    position: static;
+    transform: none;
+  }
 }
 
 /* -------------------------------------------------------------------------
