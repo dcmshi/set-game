@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useT } from '../i18n/LanguageContext';
+import { useModalFocus } from './useModalFocus';
 import { CardFace } from './CardFace';
 import { cardId, type Card } from '../game/cards';
 
@@ -46,6 +47,7 @@ function ExampleRow({ cards, title, why }: { cards: [Card, Card, Card]; title: s
 
 export function HowToPlay({ onClose }: { onClose: () => void }) {
   const { t } = useT();
+  const dialogRef = useModalFocus<HTMLDivElement>();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -70,6 +72,7 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
         aria-modal="true"
         aria-label={t('howto.title')}
         onClick={(e) => e.stopPropagation()}
+        ref={dialogRef}
       >
         <button
           type="button"

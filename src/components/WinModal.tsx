@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { formatTime } from '../lib/format';
 import { useT } from '../i18n/LanguageContext';
+import { useModalFocus } from './useModalFocus';
 
 interface WinModalProps {
   timeMs: number;
@@ -11,6 +12,7 @@ interface WinModalProps {
 
 export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProps) {
   const { t } = useT();
+  const dialogRef = useModalFocus<HTMLDivElement>();
   const playAgainRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -19,7 +21,13 @@ export function WinModal({ timeMs, bestMs, isRecord, onPlayAgain }: WinModalProp
 
   return (
     <div className="modal-backdrop">
-      <div className="screen win-modal" role="dialog" aria-modal="true" aria-label={t('win.dialogLabel')}>
+      <div
+        className="screen win-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('win.dialogLabel')}
+        ref={dialogRef}
+      >
         <p className="win-eyebrow">{t('win.eyebrow')}</p>
         <h2>{t('win.title')}</h2>
         <p className="final-time">{formatTime(timeMs)}</p>

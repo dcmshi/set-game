@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useModalFocus } from './useModalFocus';
 
 interface ConfirmDialogProps {
   title: string;
@@ -19,6 +20,7 @@ export function ConfirmDialog({
   onCancel,
   danger = true,
 }: ConfirmDialogProps) {
+  const dialogRef = useModalFocus<HTMLDivElement>();
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export function ConfirmDialog({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
+        ref={dialogRef}
       >
         <h2>{title}</h2>
         <p>{body}</p>
