@@ -406,7 +406,9 @@ button {
   border-radius: var(--radius-md);
   cursor: pointer;
   box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 14px var(--card-shadow);
-  animation: deal-in var(--dur-med) var(--ease-out) both;
+  /* backwards, not both: a retained final keyframe would override the normal
+     cascade and kill the :hover / .selected transforms below. */
+  animation: deal-in var(--dur-med) var(--ease-out) backwards;
   transition:
     transform var(--dur-fast) var(--ease-out),
     box-shadow var(--dur-fast) var(--ease-out),
@@ -439,7 +441,7 @@ button {
 .card.hinted {
   outline-color: var(--hint);
   outline-width: 5px;
-  animation: deal-in var(--dur-med) var(--ease-out) both, hint-glow 1.2s ease-in-out infinite;
+  animation: deal-in var(--dur-med) var(--ease-out) backwards, hint-glow 1.2s ease-in-out infinite;
 }
 
 .card.correct {
