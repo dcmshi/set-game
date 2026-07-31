@@ -28,6 +28,26 @@ describe('static SEO assets', () => {
     expect(locs).toEqual([SITE_URL]);
   });
 
+  // Google re-checks this file periodically and unverifies the Search Console
+  // property if it stops resolving, so it has to keep its exact filename.
+  it('serves the Search Console verification file under its declared name', () => {
+    const name = 'google2b9f6e0ac5009e7b.html';
+    expect(read(`../public/${name}`).trim()).toBe(`google-site-verification: ${name}`);
+  });
+
+  // Google only shows a favicon in results if Googlebot-Image can crawl it,
+  // so it has to stay a real file at a real path — never a data: URI.
+  it('ships a crawlable favicon file', () => {
+    const href = html().querySelector('link[rel="icon"]')!.getAttribute('href')!;
+    expect(href).not.toMatch(/^data:/);
+    expect(href).toBe('/favicon.svg');
+    const svg = read(`../public${href}`);
+    expect(svg).toContain('<svg');
+    // Square, and sized for the 48px grid Google asks for.
+    expect(svg).toMatch(/width="48"/);
+    expect(svg).toMatch(/height="48"/);
+  });
+
   it('ships a non-empty social image', () => {
     const bytes = readBytes('../public/og-image.png');
     expect(bytes.byteLength).toBeGreaterThan(1000);
@@ -66,11 +86,31 @@ describe('index.html head metadata', () => {
     expect(meta(doc, 'meta[name="twitter:image"]')).toBe(`${SITE_URL}og-image.png`);
   });
 
-  it('noindexes every path except the homepage', () => {
+  const guardScript = () => {
     const scripts = [...html().querySelectorAll('head script:not([src])')].map((s) => s.textContent ?? '');
-    const guard = scripts.find((s) => s.includes('noindex'));
+    return scripts.find((s) => s.includes('noindex'));
+  };
+
+  it('noindexes every path except the homepage', () => {
+    const guard = guardScript();
     expect(guard).toBeDefined();
     expect(guard).toContain("location.pathname !== '/'");
+  });
+
+  // noindex plus a canonical pointing at / are contradictory signals, and
+  // Google resolves that pair by honouring the canonical — silently undoing
+  // the noindex. The guard must strip the canonical on those paths.
+  it('drops the canonical wherever it applies the noindex', () => {
+    expect(guardScript()).toContain('link[rel="canonical"]');
+  });
+
+  it('runs the guard synchronously, so a crawler never sees the head mid-fix', () => {
+    const guard = [...html().querySelectorAll('head script:not([src])')].find((s) =>
+      (s.textContent ?? '').includes('noindex'),
+    )!;
+    expect(guard.hasAttribute('async')).toBe(false);
+    expect(guard.hasAttribute('defer')).toBe(false);
+    expect(guard.hasAttribute('type')).toBe(false);
   });
 });
 

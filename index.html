@@ -26,20 +26,34 @@
 
     <!--
       The Render SPA rewrite serves this file with a 200 for every path, so any
-      URL other than / is a duplicate of the homepage. The canonical above
-      collapses them; this marks room links (/r/CODE) and typos noindex.
-      Googlebot runs JS and honours a JS-injected noindex. Note robots.txt does
-      NOT disallow these paths — a blocked crawl would never read this tag.
+      URL other than / is a duplicate of the homepage. Room links (/r/CODE) and
+      typos get noindex so they stay out of the index entirely.
+
+      The canonical above has to go with them: a cross-URL canonical says
+      "fold me into /" while noindex says "drop me", and Google treats that
+      pair as contradictory — it usually honours the canonical and discards
+      the noindex, which is the opposite of what we want here. Removing it
+      leaves noindex as the only signal on these paths.
+
+      Googlebot runs JS and honours both a JS-injected noindex and a JS-removed
+      canonical. Note robots.txt does NOT disallow these paths — a blocked
+      crawl would never read this tag.
     -->
     <script>
       if (location.pathname !== '/') {
         document.head.appendChild(
           Object.assign(document.createElement('meta'), { name: 'robots', content: 'noindex' })
         );
+        document.querySelector('link[rel="canonical"]')?.remove();
       }
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L30 16 L16 30 L2 16 Z' fill='%236a2ca0'/%3E%3C/svg%3E" />
+    <!--
+      A real file, not a data: URI — Googlebot-Image has to be able to crawl
+      the favicon for it to appear beside us in search results, and an inline
+      data: URI is not a crawlable URL.
+    -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <script type="application/ld+json">
       {
