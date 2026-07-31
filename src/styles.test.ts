@@ -5,18 +5,24 @@ import { readFileSync } from 'node:fs';
 const CSS_PATH = './index.css';
 const css = () => readFileSync(new URL(CSS_PATH, import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
 
-/** Inside of the `@media <query>` block, so nested rules can be read on their own. */
+/** Contents of every `@media <query>` block, so nested rules can be read on their own. */
 function media(query: string): string {
   const source = css();
-  const at = source.indexOf(`@media ${query}`);
-  expect(at, `no @media ${query} block`).toBeGreaterThanOrEqual(0);
-  const from = source.indexOf('{', at);
-  let depth = 0;
-  for (let i = from; i < source.length; i++) {
-    if (source[i] === '{') depth++;
-    else if (source[i] === '}' && --depth === 0) return source.slice(from + 1, i);
+  const needle = `@media ${query}`;
+  const parts: string[] = [];
+  for (let at = source.indexOf(needle); at >= 0; at = source.indexOf(needle, at + 1)) {
+    const from = source.indexOf('{', at);
+    let depth = 0;
+    for (let i = from; i < source.length; i++) {
+      if (source[i] === '{') depth++;
+      else if (source[i] === '}' && --depth === 0) {
+        parts.push(source.slice(from + 1, i));
+        break;
+      }
+    }
   }
-  throw new Error(`unterminated @media ${query}`);
+  expect(parts, `no @media ${query} block`).not.toHaveLength(0);
+  return parts.join('\n');
 }
 
 /** Everything outside any at-rule block, so top-level lookups ignore overrides. */
@@ -57,6 +63,13 @@ function body(selector: string, source: string = topLevel()): string {
   return found.join('\n');
 }
 
+/** Selector lists of every rule in `source`, at-rule preludes included. */
+function selectors(source: string): string[] {
+  return [...source.matchAll(/([^{}]+)\{/g)].map(([, sel]) => sel.trim());
+}
+
+const hoverSelectors = (source: string) => selectors(source).filter((s) => s.includes(':hover')).sort();
+
 const NARROW = '(max-width: 30rem)';
 
 describe('card deal-in animation', () => {
@@ -71,6 +84,14 @@ describe('card deal-in animation', () => {
     expect(body('.card.hinted')).toMatch(/animation:[^;]*deal-in[^;]*\bbackwards\b/);
     expect(body('.card.hinted')).not.toMatch(/animation:[^;]*\bboth\b/);
   });
+});
+
+// A tap on a touch screen leaves the tapped element in :hover until something
+// else is tapped, so an unguarded hover style reads as stuck-on to the user.
+it('puts every hover style behind a (hover: hover) query', () => {
+  const guarded = hoverSelectors(media('(hover: hover)'));
+  expect(guarded).not.toHaveLength(0);
+  expect(guarded).toEqual(hoverSelectors(css()));
 });
 
 describe('in-game top bar', () => {

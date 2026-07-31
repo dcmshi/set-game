@@ -254,10 +254,14 @@ button {
   box-shadow: 0 0.5rem 1.25rem var(--accent-soft);
   transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), filter var(--dur-fast);
 }
-.primary-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.06);
-  box-shadow: 0 0.75rem 1.5rem var(--accent-soft);
+/* Hover styling is gated on a device that can actually hover: a tap on a touch
+   screen otherwise leaves the element hovered until something else is tapped. */
+@media (hover: hover) {
+  .primary-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow: 0 0.75rem 1.5rem var(--accent-soft);
+  }
 }
 .primary-btn:active {
   transform: translateY(0);
@@ -358,9 +362,11 @@ button {
   cursor: pointer;
   transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast), opacity var(--dur-fast);
 }
-.hint-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  background: color-mix(in srgb, var(--gold-btn-bg) 70%, var(--gold) 12%);
+@media (hover: hover) {
+  .hint-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--gold-btn-bg) 70%, var(--gold) 12%);
+  }
 }
 .hint-btn:disabled {
   opacity: 0.4;
@@ -415,9 +421,11 @@ button {
     outline-color var(--dur-fast) var(--ease-out);
 }
 
-.card:hover {
-  transform: translateY(-3px) scale(1.015);
-  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 12px 22px var(--card-shadow);
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.5) inset, 0 12px 22px var(--card-shadow);
+  }
 }
 
 .card:active {
@@ -620,9 +628,11 @@ button {
   box-shadow: 0 4px 12px var(--surface-shadow);
   transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast);
 }
-.icon-btn:hover {
-  transform: translateY(-1px);
-  color: var(--text);
+@media (hover: hover) {
+  .icon-btn:hover {
+    transform: translateY(-1px);
+    color: var(--text);
+  }
 }
 
 .lang-select {
@@ -644,9 +654,11 @@ button {
   background-position: right 0.5rem center;
   background-size: 0.85rem;
 }
-.lang-select:hover {
-  color: var(--text);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .lang-select:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
 }
 .lang-select:focus-visible {
   outline: 2px solid var(--accent);
@@ -667,8 +679,10 @@ button {
   cursor: pointer;
   padding: 0.25rem 0.5rem;
 }
-.text-btn:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .text-btn:hover {
+    text-decoration: underline;
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -797,9 +811,11 @@ button {
   box-shadow: 0 4px 12px var(--surface-shadow);
   transition: color var(--dur-fast), transform var(--dur-fast) var(--ease-out);
 }
-.quit-btn:hover {
-  color: var(--red);
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .quit-btn:hover {
+    color: var(--red);
+    transform: translateY(-1px);
+  }
 }
 .confirm-dialog {
   max-width: 24rem;
@@ -827,9 +843,11 @@ button {
   cursor: pointer;
   transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast);
 }
-.danger-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.08);
+@media (hover: hover) {
+  .danger-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -903,8 +921,10 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
   letter-spacing: 0.04em;
   transition: color var(--dur-fast) var(--ease-out);
 }
-.scroll-cue:hover {
-  color: var(--text);
+@media (hover: hover) {
+  .scroll-cue:hover {
+    color: var(--text);
+  }
 }
 .scroll-cue svg {
   width: 1.5rem;
@@ -931,8 +951,10 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
   font-weight: 600;
   transition: color var(--dur-fast) var(--ease-out);
 }
-.site-content-back:hover {
-  color: var(--text);
+@media (hover: hover) {
+  .site-content-back:hover {
+    color: var(--text);
+  }
 }
 .site-content-back svg {
   width: 1.1rem;
