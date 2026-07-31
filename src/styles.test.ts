@@ -86,6 +86,13 @@ describe('card deal-in animation', () => {
   });
 });
 
+// --text-muted (0.64 alpha) and --text-soft (0.62) were indistinguishable in
+// the light theme, so secondary text is one tier rather than two.
+it('has a single token for secondary text', () => {
+  expect(css()).not.toContain('--text-soft');
+  expect(css()).toContain('--text-muted');
+});
+
 // A tap on a touch screen leaves the tapped element in :hover until something
 // else is tapped, so an unguarded hover style reads as stuck-on to the user.
 it('puts every hover style behind a (hover: hover) query', () => {

@@ -34,7 +34,6 @@
 
   --text: #1b241d;
   --text-muted: rgba(27, 36, 29, 0.64);
-  --text-soft: rgba(27, 36, 29, 0.62);
 
   --surface: #ffffff;
   --surface-border: rgba(27, 36, 29, 0.1);
@@ -80,7 +79,6 @@
 
     --text: #eef1ea;
     --text-muted: rgba(238, 241, 234, 0.68);
-    --text-soft: rgba(238, 241, 234, 0.55);
 
     --surface: #16241b;
     --surface-border: rgba(238, 241, 234, 0.1);
@@ -232,7 +230,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-soft);
+  color: var(--text-muted);
 }
 
 .tagline {
@@ -832,7 +830,7 @@ button {
 .mp-share-link { display: block; word-break: break-all; background: var(--surface); color: var(--text); border: 1px solid var(--surface-border); padding: 0.4rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.85rem; }
 .mp-roster, .mp-scoreboard, .mp-final-scores { list-style: none; margin: 0; padding: 0; width: 100%; }
 .mp-roster li { padding: 0.3rem 0; border-bottom: 1px solid var(--surface-border); }
-.mp-tag { color: var(--text-soft); font-size: 0.8rem; }
+.mp-tag { color: var(--text-muted); font-size: 0.8rem; }
 .mp-tag-off, .mp-off { opacity: 0.55; }
 .mp-waiting { color: var(--text-muted); font-style: italic; margin: 0; }
 .mp-play { display: flex; gap: 1rem; align-items: flex-start; width: 100%; }
@@ -964,7 +962,7 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
   gap: 0.25rem;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-sm);
-  color: var(--text-soft);
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 600;
@@ -995,7 +993,7 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
   align-items: center;
   gap: 0.4rem;
   margin-bottom: 1.5rem;
-  color: var(--text-soft);
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
