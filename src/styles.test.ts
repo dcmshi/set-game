@@ -94,6 +94,25 @@ it('puts every hover style behind a (hover: hover) query', () => {
   expect(guarded).toEqual(hoverSelectors(css()));
 });
 
+describe('suit colours', () => {
+  it('reaches the shapes through the inherited colour of each suit class', () => {
+    for (const suit of ['red', 'green', 'purple']) {
+      expect(body(`.color-${suit}`)).toBe(`color: var(--suit-${suit});`);
+      expect(body(`.stripe-${suit}`)).toBe(`stroke: var(--suit-${suit});`);
+    }
+  });
+
+  it('offers a colourblind palette that replaces only the suit tokens', () => {
+    const swapped = body(":root[data-palette='colorblind']");
+    for (const suit of ['red', 'green', 'purple']) {
+      expect(swapped).toMatch(new RegExp(`--suit-${suit}:\\s*#`));
+    }
+    // Remapping --red itself would recolour the wrong-guess outline, the error
+    // text and the danger button, none of which are suits.
+    expect(swapped).not.toMatch(/(^|[^-])--(red|green|purple):/);
+  });
+});
+
 describe('in-game top bar', () => {
   it('pins the actions beside the centred timer on a wide viewport', () => {
     expect(body('.topbar-actions')).toMatch(/position:\s*absolute/);

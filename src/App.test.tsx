@@ -80,6 +80,15 @@ it('defines each stripe pattern once, even with the how-to modal over the board'
   expect(document.querySelectorAll('#stripes-purple')).toHaveLength(1);
 });
 
+// A player who needs the colourblind palette needs it before starting and
+// again mid-game, so the control has to be reachable from both.
+it('offers the colourblind palette on the start screen and in the top bar', async () => {
+  render(<App seed={5} />);
+  expect(screen.getByRole('button', { name: /colorblind/i })).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  expect(screen.getByRole('button', { name: /colorblind/i })).toBeInTheDocument();
+});
+
 it('tracks the current screen on the root element so static copy can hide', async () => {
   render(<App seed={5} />);
   expect(document.documentElement.dataset.appScreen).toBe('start');

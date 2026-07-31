@@ -1,6 +1,7 @@
 import { formatTime } from '../lib/format';
 import { useT } from '../i18n/LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
+import { PaletteToggle } from './PaletteToggle';
 
 interface StartScreenProps {
   bestMs: number | null;
@@ -15,6 +16,7 @@ export function StartScreen({ bestMs, onStart, onHowToPlay, onMultiplayer }: Sta
     <>
       <div className="screen start-screen">
         <div className="start-topline">
+          <PaletteToggle />
           <LanguageToggle />
         </div>
         <div className="brand">

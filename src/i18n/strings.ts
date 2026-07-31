@@ -35,6 +35,7 @@ const en = {
 
   'topbar.howToAria': 'How to play',
   'lang.groupAria': 'Language',
+  'palette.aria': 'Colorblind-friendly colors',
 
   'timer.aria': 'elapsed time',
 
@@ -139,6 +140,7 @@ const zh: Record<StringKey, string> = {
 
   'topbar.howToAria': '玩法说明',
   'lang.groupAria': '语言',
+  'palette.aria': '色盲友好配色',
 
   'timer.aria': '已用时间',
   'card.hinted': '已提示',
@@ -240,6 +242,7 @@ const fr: Record<StringKey, string> = {
 
   'topbar.howToAria': 'Comment jouer',
   'lang.groupAria': 'Langue',
+  'palette.aria': 'Couleurs adaptées au daltonisme',
 
   'timer.aria': 'temps écoulé',
   'card.hinted': 'indice',
@@ -341,6 +344,7 @@ const es: Record<StringKey, string> = {
 
   'topbar.howToAria': 'Cómo jugar',
   'lang.groupAria': 'Idioma',
+  'palette.aria': 'Colores adaptados al daltonismo',
 
   'timer.aria': 'tiempo transcurrido',
   'card.hinted': 'pista',
@@ -441,6 +445,7 @@ const ja: Record<StringKey, string> = {
 
   'topbar.howToAria': '遊び方',
   'lang.groupAria': '言語',
+  'palette.aria': '色覚サポート配色',
 
   'timer.aria': '経過時間',
   'card.hinted': 'ヒント',

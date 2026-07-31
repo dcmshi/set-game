@@ -8,10 +8,16 @@
 :root {
   color-scheme: light dark;
 
-  /* Suit colors — shared by both themes */
+  /* Shared by both themes. --red and --green double as the danger/success hues,
+     so the suits point at them through their own tokens instead of using them
+     directly — that way a palette swap recolors cards and nothing else. */
   --red: #c8283f;
   --green: #1f8f4e;
   --purple: #6b3fa0;
+
+  --suit-red: var(--red);
+  --suit-green: var(--green);
+  --suit-purple: var(--purple);
 
   /* Light theme (default) */
   --page-1: #eef1e9;
@@ -91,6 +97,15 @@
     --gold-btn-bg: rgba(240, 180, 60, 0.08);
     --hint: #f2b21e;
   }
+}
+
+/* Three hues from the Okabe-Ito qualitative palette, which is designed to stay
+   distinguishable under the common forms of color blindness — unlike red and
+   green, two of the four features a player has to tell apart. */
+:root[data-palette='colorblind'] {
+  --suit-red: #0072b2;
+  --suit-green: #d55e00;
+  --suit-purple: #cc79a7;
 }
 
 * {
@@ -176,22 +191,22 @@ button {
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 .glyph-solid {
-  background: var(--red);
+  background: var(--suit-red);
 }
 .glyph-striped {
   background-color: var(--card-bg);
   background-image: repeating-linear-gradient(
-    var(--green),
-    var(--green) 2px,
+    var(--suit-green),
+    var(--suit-green) 2px,
     transparent 2px,
     transparent 4px
   );
-  outline: 2px solid var(--green);
+  outline: 2px solid var(--suit-green);
   outline-offset: -2px;
 }
 .glyph-open {
   background: transparent;
-  outline: 2px solid var(--purple);
+  outline: 2px solid var(--suit-purple);
   outline-offset: -2px;
 }
 
@@ -470,6 +485,28 @@ button {
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.08));
 }
 
+/* The suit colour reaches the shapes as an inherited `color`, which they paint
+   with via currentColor. The stripe patterns are shared across every card, so
+   they cannot inherit and are coloured by suit here instead. */
+.color-red {
+  color: var(--suit-red);
+}
+.color-green {
+  color: var(--suit-green);
+}
+.color-purple {
+  color: var(--suit-purple);
+}
+.stripe-red {
+  stroke: var(--suit-red);
+}
+.stripe-green {
+  stroke: var(--suit-green);
+}
+.stripe-purple {
+  stroke: var(--suit-purple);
+}
+
 /* Stagger the deal-in animation across the first couple of rows so a fresh
    board feels dealt rather than all appearing in one flat instant. */
 .board .card:nth-child(1) { animation-delay: 0ms, 0ms; }
@@ -614,6 +651,8 @@ button {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .icon-btn {
@@ -633,6 +672,20 @@ button {
     transform: translateY(-1px);
     color: var(--text);
   }
+}
+
+.palette-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.13rem;
+  padding: 0;
+}
+.palette-dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: currentColor;
 }
 
 .lang-select {
