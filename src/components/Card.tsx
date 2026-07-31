@@ -13,10 +13,12 @@ interface CardProps {
   selected: boolean;
   hinted: boolean;
   feedback: 'correct' | 'wrong' | null;
+  /** Set by a board using a roving tabindex; on its own a card is tabbable. */
+  tabIndex?: number;
   onSelect: (id: string) => void;
 }
 
-export function Card({ card, selected, hinted, feedback, onSelect }: CardProps) {
+export function Card({ card, selected, hinted, feedback, tabIndex, onSelect }: CardProps) {
   const { lang } = useT();
   const classes = [
     'card',
@@ -34,6 +36,7 @@ export function Card({ card, selected, hinted, feedback, onSelect }: CardProps) 
       className={classes}
       aria-label={cardAriaLabel(card, lang, hinted)}
       aria-pressed={selected}
+      tabIndex={tabIndex}
       onClick={() => onSelect(card.id)}
     >
       <CardFace card={card} />
