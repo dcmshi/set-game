@@ -10,6 +10,7 @@ import { ConfirmDialog } from './components/ConfirmDialog';
 import { LanguageToggle } from './components/LanguageToggle';
 import { SetSvgDefs } from './components/SetSvgDefs';
 import { PaletteToggle } from './components/PaletteToggle';
+import { ThemeToggle } from './components/ThemeToggle';
 import { MultiplayerApp } from './components/mp/MultiplayerApp';
 import { useT, type I18n } from './i18n/LanguageContext';
 import { formatTime } from './lib/format';
@@ -98,6 +99,7 @@ export default function App({ seed }: { seed?: number }) {
               >
                 ?
               </button>
+              <ThemeToggle />
               <PaletteToggle />
               <LanguageToggle />
             </div>
