@@ -183,29 +183,45 @@ button {
   gap: 0.5rem;
 }
 
-.glyph {
-  width: 0.85rem;
-  height: 1.5rem;
+/* Each glyph is a suit-coloured diamond over a cardstock interior, so all three
+   shadings read on the surface the way they do on a card. The rim has to be a
+   layer of its own: clip-path clips an outline along with everything else the
+   element paints, leaving four slivers at the diamond's tips. */
+.glyph,
+.glyph::after {
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
+.glyph {
+  position: relative;
+  width: 0.85rem;
+  height: 1.5rem;
+  background: currentColor;
+}
+.glyph::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--card-bg);
+}
 .glyph-solid {
-  background: var(--suit-red);
+  color: var(--suit-red);
+}
+.glyph-solid::after {
+  background: currentColor;
 }
 .glyph-striped {
-  background-color: var(--card-bg);
+  color: var(--suit-green);
+}
+.glyph-striped::after {
   background-image: repeating-linear-gradient(
-    var(--suit-green),
-    var(--suit-green) 2px,
+    currentColor,
+    currentColor 2px,
     transparent 2px,
     transparent 4px
   );
-  outline: 2px solid var(--suit-green);
-  outline-offset: -2px;
 }
 .glyph-open {
-  background: transparent;
-  outline: 2px solid var(--suit-purple);
-  outline-offset: -2px;
+  color: var(--suit-purple);
 }
 
 .screen h1 {

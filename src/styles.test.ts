@@ -210,6 +210,24 @@ describe('suit colours', () => {
   });
 });
 
+describe('start-screen brand glyphs', () => {
+  // clip-path clips an outline along with the rest of the element, so a rim
+  // drawn that way survived only as four slivers at the diamond's tips.
+  it('draws each rim as a clipped layer rather than an outline', () => {
+    for (const selector of selectors(css()).filter((s) => s.startsWith('.glyph'))) {
+      expect(body(selector), selector).not.toMatch(/outline/);
+    }
+    expect(body('.glyph')).toMatch(/background:\s*currentColor/);
+  });
+
+  // The open glyph had no interior of its own, so it took the colour of the
+  // screen behind it while the striped one beside it showed cardstock.
+  it('gives all three the same cardstock interior', () => {
+    expect(body('.glyph::after')).toMatch(/background:\s*var\(--card-bg\)/);
+    expect(body('.glyph-open')).toBe('color: var(--suit-purple);');
+  });
+});
+
 describe('in-game top bar', () => {
   it('is described by a single .topbar rule', () => {
     expect(bodiesIn(topLevel(), '.topbar')).toHaveLength(1);
