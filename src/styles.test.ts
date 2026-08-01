@@ -309,6 +309,24 @@ describe('in-game top bar', () => {
       expect(at(width).value('.topbar-actions', 'transform'), `at ${width}px`).toBe('none');
     }
   });
+
+  // Quit + theme + ? + palette + language is ~286px in English and ~306px in
+  // French against a 288px content box at 320px, so the row cannot stay on one
+  // line. Wrapping it is what keeps the French bar on-screen.
+  it('wraps the actions rather than overflowing on a narrow viewport', () => {
+    for (const width of PHONE_WIDTHS) {
+      expect(at(width).value('.topbar-actions', 'flex-wrap'), `at ${width}px`).toBe('wrap');
+      expect(at(width).value('.topbar-actions', 'justify-content'), `at ${width}px`).toBe('center');
+    }
+  });
+
+  // Above the breakpoint the actions are pinned beside the centred timer, where
+  // there is room for one line and wrapping would only misalign them.
+  it('keeps them on one line above the breakpoint', () => {
+    for (const width of WIDE_WIDTHS) {
+      expect(at(width).value('.topbar-actions', 'flex-wrap'), `at ${width}px`).toBeUndefined();
+    }
+  });
 });
 
 describe('board at narrow viewports', () => {

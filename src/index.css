@@ -1027,5 +1027,9 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
   .topbar-actions {
     position: static;
     transform: none;
+    /* Five controls exceed a 320px content box in French, so the row wraps
+       rather than running off the edge. */
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
