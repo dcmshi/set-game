@@ -800,10 +800,26 @@ git commit -m "fix(css): wrap the top-bar actions instead of overflowing a phone
 Run: `npm run typecheck && npm test && npm run build`
 Expected: all PASS, build succeeds.
 
-- [ ] **Step 2: Confirm the CSS survived the build**
+- [ ] **Step 2: Confirm the build preserved the theme semantics**
 
-Run: `grep -c "light-dark(" dist/assets/*.css`
-Expected: a non-zero count. Vite must not have downlevelled or dropped `light-dark()`. If the count is 0, check the build target before going further — the feature is inert without it.
+Vite 8 minifies CSS with lightningcss, which **downlevels `light-dark()`** into a
+custom-property switch — so `grep light-dark dist/assets/*.css` correctly returns
+nothing. That is not a failure. What matters is that the switch is driven from all
+three places:
+
+Run: `grep -o "data-theme[^}]*}" dist/assets/*.css`
+
+Expected, both rules present:
+
+```
+data-theme=light]{--lightningcss-light:initial;--lightningcss-dark: ;color-scheme:light}
+data-theme=dark]{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark}
+```
+
+Plus a `@media (prefers-color-scheme:dark){:root{…}}` block for the unset case.
+The two attribute rules are specificity (0,2,0) against the media query's
+(0,1,0) `:root`, so an explicit choice still beats the OS in both directions.
+If either attribute rule is missing, the toggle is inert — stop and check it.
 
 - [ ] **Step 3: Drive it in a browser**
 
