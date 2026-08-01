@@ -595,40 +595,6 @@ button {
 }
 
 /* -------------------------------------------------------------------------
-   Responsive
-   ---------------------------------------------------------------------- */
-
-@media (max-width: 30rem) {
-  .board {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .screen {
-    padding: 1.75rem 1.25rem;
-  }
-  .screen h1 {
-    font-size: 2.75rem;
-  }
-  .hud {
-    gap: 0.5rem;
-  }
-  .hud-item {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.8rem;
-  }
-  /* The actions are ~10rem wide; pinned right of a centred timer they overlap
-     the timer pill at this width, so let them drop onto their own line. */
-  .topbar {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .topbar-actions {
-    position: static;
-    transform: none;
-  }
-}
-
-/* -------------------------------------------------------------------------
    i18n toggle, in-game top-bar actions
    ---------------------------------------------------------------------- */
 
@@ -1007,4 +973,44 @@ html[data-app-screen]:not([data-app-screen='start']) #site-content {
 .site-content-back svg {
   width: 1.1rem;
   height: 1.1rem;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+
+   Last in the file on purpose: these rules override base rules by selector of
+   equal specificity, so they only win while nothing redeclares the same
+   selector below them. Keep new breakpoints here rather than beside the
+   component they adjust.
+   ---------------------------------------------------------------------- */
+
+@media (max-width: 30rem) {
+  .board {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .screen {
+    padding: 1.75rem 1.25rem;
+  }
+  .screen h1 {
+    font-size: 2.75rem;
+  }
+  .hud {
+    gap: 0.5rem;
+  }
+  .hud-item {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+  }
+  /* Quit + ? + palette + language is 243px wide against a 288px content box at
+     320px; pinned right of a centred timer it buries the timer pill, so let it
+     drop onto its own line. */
+  .topbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .topbar-actions {
+    position: static;
+    transform: none;
+  }
 }

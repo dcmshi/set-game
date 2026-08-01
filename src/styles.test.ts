@@ -70,7 +70,97 @@ function selectors(source: string): string[] {
 
 const hoverSelectors = (source: string) => selectors(source).filter((s) => s.includes(':hover')).sort();
 
-const NARROW = '(max-width: 30rem)';
+/* ---------------------------------------------------------------------------
+   Resolving a declaration the way a browser would
+
+   Asserting that a media block *contains* an override says nothing about
+   whether it wins: a later rule of equal specificity beats it. That gap let the
+   narrow top-bar rules sit above `.topbar-actions` and never apply, so the
+   actions stayed pinned over the timer on every phone.
+
+   Lookup is by exact selector text, so every candidate rule has identical
+   specificity by construction and the last match wins outright. That is the
+   whole cascade model here — a declaration reaching the element through some
+   other selector is out of scope.
+   ------------------------------------------------------------------------ */
+
+interface Env {
+  width: number;
+  hover?: boolean;
+  scheme?: 'light' | 'dark';
+  reducedMotion?: boolean;
+}
+
+/** Media queries resolve rem against the initial 16px, not the root font-size. */
+function toPx(length: string): number {
+  const [, n, unit] = length.trim().match(/^([\d.]+)(rem|em|px)$/) ?? [];
+  if (!n) throw new Error(`unsupported media length: ${length}`);
+  return unit === 'px' ? Number(n) : Number(n) * 16;
+}
+
+/**
+ * Throws on any feature it does not model rather than silently failing to
+ * match, so a new kind of media query cannot quietly rot these assertions.
+ */
+function matches(query: string, env: Env): boolean {
+  return query.split(/\s+and\s+/).every((clause) => {
+    const [, feature, value] = clause.trim().match(/^\(([\w-]+):\s*([^)]+)\)$/) ?? [];
+    if (!feature) throw new Error(`unsupported media query: ${clause}`);
+    switch (feature) {
+      case 'max-width':
+        return env.width <= toPx(value);
+      case 'min-width':
+        return env.width >= toPx(value);
+      case 'hover':
+        return (env.hover ?? true) === (value.trim() === 'hover');
+      case 'prefers-color-scheme':
+        return (env.scheme ?? 'light') === value.trim();
+      case 'prefers-reduced-motion':
+        return (env.reducedMotion ?? false) === (value.trim() === 'reduce');
+      default:
+        throw new Error(`unsupported media feature: ${feature}`);
+    }
+  });
+}
+
+/** Every rule in the sheet, in source order, tagged with the query guarding it. */
+function orderedRules(): { selector: string; decls: string; query: string | null }[] {
+  const source = css();
+  const out: { selector: string; decls: string; query: string | null }[] = [];
+  for (const [, prelude, block] of source.matchAll(/([^{}]+)\{((?:[^{}]|\{[^{}]*\})*)\}/g)) {
+    const selector = prelude.trim();
+    if (!selector.startsWith('@media')) {
+      out.push({ selector, decls: block, query: null });
+      continue;
+    }
+    const query = selector.slice('@media'.length).trim();
+    for (const [, nested, decls] of block.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      out.push({ selector: nested.trim(), decls, query });
+    }
+  }
+  return out;
+}
+
+/** The winning value of `prop` on `selector` at `env`, or undefined if unset. */
+function resolve(selector: string, prop: string, env: Env): string | undefined {
+  let winner: string | undefined;
+  for (const rule of orderedRules()) {
+    if (rule.selector !== selector) continue;
+    if (rule.query !== null && !matches(rule.query, env)) continue;
+    for (const [, value] of rule.decls.matchAll(new RegExp(`(?:^|;)\\s*${prop}:\\s*([^;]+)`, 'g'))) {
+      winner = value.trim();
+    }
+  }
+  return winner;
+}
+
+const at = (width: number) => ({
+  value: (selector: string, prop: string) => resolve(selector, prop, { width }),
+});
+
+/** Widths either side of the 30rem breakpoint, which matches at exactly 480px. */
+const PHONE_WIDTHS = [320, 390, 430, 480];
+const WIDE_WIDTHS = [481, 900];
 
 describe('card deal-in animation', () => {
   // A retained animation value wins over the normal cascade, so an animation
@@ -130,15 +220,38 @@ describe('in-game top bar', () => {
   });
 
   it('pins the actions beside the centred timer on a wide viewport', () => {
-    expect(body('.topbar-actions')).toMatch(/position:\s*absolute/);
+    for (const width of WIDE_WIDTHS) {
+      expect(at(width).value('.topbar-actions', 'position'), `at ${width}px`).toBe('absolute');
+    }
   });
 
-  // Quit + ? + language select is ~10rem wide; pinned right of a centred timer
-  // it overlaps the timer pill on a ~320px screen. Stack instead of overlapping.
+  // Quit + ? + palette + language is 243px wide (263px in French) against a
+  // 288px content box at 320px. Pinned right of a centred timer it buries the
+  // timer pill, so the two stack on a phone instead of overlapping.
   it('stacks the timer and actions on a narrow viewport', () => {
-    const narrow = media(NARROW);
-    expect(body('.topbar', narrow)).toMatch(/flex-direction:\s*column/);
-    expect(body('.topbar', narrow)).toMatch(/align-items:\s*center/);
-    expect(body('.topbar-actions', narrow)).toMatch(/position:\s*static/);
+    for (const width of PHONE_WIDTHS) {
+      expect(at(width).value('.topbar', 'flex-direction'), `at ${width}px`).toBe('column');
+      expect(at(width).value('.topbar', 'align-items'), `at ${width}px`).toBe('center');
+    }
+  });
+
+  // Taking the actions out of flow is what lets them cover the timer, so the
+  // stack above only holds while nothing in the bar is positioned.
+  it('keeps the actions in flow on a narrow viewport, so they cannot cover the timer', () => {
+    for (const width of PHONE_WIDTHS) {
+      expect(at(width).value('.topbar-actions', 'position'), `at ${width}px`).toBe('static');
+      expect(at(width).value('.topbar-actions', 'transform'), `at ${width}px`).toBe('none');
+    }
+  });
+});
+
+describe('board at narrow viewports', () => {
+  it('drops to three columns on a phone and keeps four above the breakpoint', () => {
+    for (const width of PHONE_WIDTHS) {
+      expect(at(width).value('.board', 'grid-template-columns'), `at ${width}px`).toBe('repeat(3, 1fr)');
+    }
+    for (const width of WIDE_WIDTHS) {
+      expect(at(width).value('.board', 'grid-template-columns'), `at ${width}px`).toBe('repeat(4, 1fr)');
+    }
   });
 });
