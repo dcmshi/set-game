@@ -210,6 +210,54 @@ describe('suit colours', () => {
   });
 });
 
+/* Every token whose value differs between the two themes. --card-bg is absent on
+   purpose: it is the same cardstock under either room lighting. */
+const THEMED_TOKENS = [
+  'page-1', 'page-2',
+  'felt-1', 'felt-2', 'felt-3', 'felt-line',
+  'card-bg-2', 'card-border', 'card-shadow',
+  'text', 'text-muted',
+  'surface', 'surface-border', 'surface-shadow',
+  'accent', 'accent-strong', 'accent-soft',
+  'danger-soft', 'success-soft',
+  'gold', 'gold-soft', 'gold-btn-bg', 'hint',
+];
+
+describe('light and dark themes', () => {
+  // An explicit choice has to beat the system in both directions, which a media
+  // query alone cannot do. Duplicating the dark tokens under a second selector
+  // would work but leaves two copies to keep in sync; light-dark() keeps one.
+  it('carries both values on every themed token, with no dark override block', () => {
+    expect(css()).not.toContain('prefers-color-scheme');
+    const root = body(':root');
+    for (const token of THEMED_TOKENS) {
+      expect(root, token).toMatch(new RegExp(`--${token}:\\s*light-dark\\(`));
+    }
+  });
+
+  it('leaves the cardstock the same under both', () => {
+    const root = body(':root');
+    expect(root).toMatch(/--card-bg:\s*#fdfcf7/);
+    expect(root).not.toMatch(/--card-bg:\s*light-dark/);
+  });
+
+  // light-dark() in an unregistered custom property resolves against the
+  // color-scheme of the element it is *used* on, so a second color-scheme
+  // declaration anywhere else would split the theme.
+  it('declares color-scheme only on the root and the two explicit choices', () => {
+    const declaring = selectors(css())
+      .filter((s) => bodiesIn(css(), s).some((d) => /(^|;)\s*color-scheme:/.test(d)))
+      .sort();
+    expect(declaring).toEqual([':root', ":root[data-theme='dark']", ":root[data-theme='light']"]);
+  });
+
+  it('lets an explicit choice pin the scheme in either direction', () => {
+    expect(body(':root')).toMatch(/color-scheme:\s*light dark/);
+    expect(body(":root[data-theme='light']")).toBe('color-scheme: light;');
+    expect(body(":root[data-theme='dark']")).toBe('color-scheme: dark;');
+  });
+});
+
 describe('start-screen brand glyphs', () => {
   // clip-path clips an outline along with the rest of the element, so a rim
   // drawn that way survived only as four slivers at the diamond's tips.

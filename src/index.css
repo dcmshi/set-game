@@ -1,11 +1,14 @@
 /* -------------------------------------------------------------------------
    Set — visual design system
    A card-table aesthetic: cream cardstock symbols dealt onto a felt board.
-   Light and dark are both first-class; only the "room lighting" (page and
-   felt tones) shifts between them — the cards themselves stay true cardstock.
+   Light and dark are both first-class, each token carrying both values in a
+   light-dark() pair; only the "room lighting" (page and felt tones) shifts
+   between them — the cards themselves stay true cardstock.
    ---------------------------------------------------------------------- */
 
 :root {
+  /* Unset, this follows the OS; the data-theme rules below pin it once the
+     player has chosen. Declared nowhere else — see the note under them. */
   color-scheme: light dark;
 
   /* Shared by both themes. --red and --green double as the danger/success hues,
@@ -19,37 +22,39 @@
   --suit-green: var(--green);
   --suit-purple: var(--purple);
 
-  /* Light theme (default) */
-  --page-1: #eef1e9;
-  --page-2: #e3e8dc;
-  --felt-1: #3d9765;
-  --felt-2: #257049;
-  --felt-3: #164f33;
-  --felt-line: rgba(255, 255, 255, 0.14);
+  --page-1: light-dark(#eef1e9, #12241a);
+  --page-2: light-dark(#e3e8dc, #0c1a13);
+  --felt-1: light-dark(#3d9765, #1f6944);
+  --felt-2: light-dark(#257049, #123f29);
+  --felt-3: light-dark(#164f33, #081f14);
+  --felt-line: light-dark(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.07));
 
+  /* The cards are the same cardstock under either room lighting, so only their
+     secondary tones and edges shift. */
   --card-bg: #fdfcf7;
-  --card-bg-2: #f5f2e8;
-  --card-border: #e3ddc8;
-  --card-shadow: rgba(24, 34, 26, 0.22);
+  --card-bg-2: light-dark(#f5f2e8, #f2efe3);
+  --card-border: light-dark(#e3ddc8, #d9d3bd);
+  --card-shadow: light-dark(rgba(24, 34, 26, 0.22), rgba(0, 0, 0, 0.55));
 
-  --text: #1b241d;
-  --text-muted: rgba(27, 36, 29, 0.64);
+  --text: light-dark(#1b241d, #eef1ea);
+  --text-muted: light-dark(rgba(27, 36, 29, 0.64), rgba(238, 241, 234, 0.68));
 
-  --surface: #ffffff;
-  --surface-border: rgba(27, 36, 29, 0.1);
-  --surface-shadow: rgba(24, 34, 26, 0.16);
+  --surface: light-dark(#ffffff, #16241b);
+  --surface-border: light-dark(rgba(27, 36, 29, 0.1), rgba(238, 241, 234, 0.1));
+  --surface-shadow: light-dark(rgba(24, 34, 26, 0.16), rgba(0, 0, 0, 0.45));
 
-  --accent: #2f6fed;
-  --accent-strong: #1d55c9;
-  --accent-soft: rgba(47, 111, 237, 0.16);
-  --danger-soft: rgba(200, 40, 63, 0.14);
-  --success-soft: rgba(31, 143, 78, 0.16);
-  /* Deeper amber in light mode keeps gold text at AA contrast on cream/white. */
-  --gold: #96610b;
-  --gold-soft: rgba(150, 97, 11, 0.18);
-  --gold-btn-bg: rgba(150, 97, 11, 0.1);
-  /* Brighter, more saturated gold used for the hint highlight so it reads clearly. */
-  --hint: #e0990f;
+  --accent: light-dark(#2f6fed, #5b9dff);
+  --accent-strong: light-dark(#1d55c9, #8ebcff);
+  --accent-soft: light-dark(rgba(47, 111, 237, 0.16), rgba(91, 157, 255, 0.22));
+  --danger-soft: light-dark(rgba(200, 40, 63, 0.14), rgba(255, 107, 129, 0.18));
+  --success-soft: light-dark(rgba(31, 143, 78, 0.16), rgba(70, 210, 133, 0.2));
+  /* Deeper amber in light mode keeps gold text at AA contrast on cream/white;
+     the brighter dark value reads against the dark surfaces. */
+  --gold: light-dark(#96610b, #c98a12);
+  --gold-soft: light-dark(rgba(150, 97, 11, 0.18), rgba(240, 180, 60, 0.22));
+  --gold-btn-bg: light-dark(rgba(150, 97, 11, 0.1), rgba(240, 180, 60, 0.08));
+  /* More saturated than --gold so the hint highlight reads clearly. */
+  --hint: light-dark(#e0990f, #f2b21e);
 
   --radius-lg: 1.5rem;
   --radius-md: 1rem;
@@ -63,38 +68,16 @@
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page-1: #12241a;
-    --page-2: #0c1a13;
-    --felt-1: #1f6944;
-    --felt-2: #123f29;
-    --felt-3: #081f14;
-    --felt-line: rgba(255, 255, 255, 0.07);
-
-    --card-bg: #fdfcf7;
-    --card-bg-2: #f2efe3;
-    --card-border: #d9d3bd;
-    --card-shadow: rgba(0, 0, 0, 0.55);
-
-    --text: #eef1ea;
-    --text-muted: rgba(238, 241, 234, 0.68);
-
-    --surface: #16241b;
-    --surface-border: rgba(238, 241, 234, 0.1);
-    --surface-shadow: rgba(0, 0, 0, 0.45);
-
-    --accent: #5b9dff;
-    --accent-strong: #8ebcff;
-    --accent-soft: rgba(91, 157, 255, 0.22);
-    --danger-soft: rgba(255, 107, 129, 0.18);
-    --success-soft: rgba(70, 210, 133, 0.2);
-    /* Brighter gold reads well against the dark surfaces. */
-    --gold: #c98a12;
-    --gold-soft: rgba(240, 180, 60, 0.22);
-    --gold-btn-bg: rgba(240, 180, 60, 0.08);
-    --hint: #f2b21e;
-  }
+/* An in-app choice has to beat the OS in both directions, so it cannot be a
+   media query. These two rules are the only other place color-scheme appears:
+   light-dark() inside an unregistered custom property resolves against the
+   color-scheme of the element it is used on, and every element inherits the
+   root's — a third declaration elsewhere would split the theme in half. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 /* Three hues from the Okabe-Ito qualitative palette, which is designed to stay
