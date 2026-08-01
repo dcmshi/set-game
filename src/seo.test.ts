@@ -152,6 +152,13 @@ describe('crawlable content section', () => {
     expect(first.textContent!.replace(/\s+/g, ' ').trim()).toBe('Back to game');
   });
 
+  // This section is English by prior decision, but the app now rewrites the
+  // document language to whatever the player is using. Without a lang of its
+  // own, the English prose inherits e.g. lang="ja" and is announced in Japanese.
+  it('declares its own language, since the document language follows the UI', () => {
+    expect(html().querySelector('#site-content')!.getAttribute('lang')).toBe('en');
+  });
+
   it('scrolls smoothly, except for readers who asked for less motion', () => {
     const css = read('./index.css');
     expect(css).toContain('scroll-behavior: smooth');

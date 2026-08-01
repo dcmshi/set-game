@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { strings, type StringKey } from './strings';
 import { detectLang, type Lang } from './detectLang';
 import { getStoredLang, setStoredLang } from './langStorage';
@@ -37,6 +37,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLangState(next);
     setStoredLang(next);
   }, []);
+  // index.html ships a static lang="en" for the crawler, so the attribute has to
+  // be rewritten once the UI language is known. Here rather than in the toggle:
+  // a language restored from storage or detected from the browser never passes
+  // through a press.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
   const value = useMemo<I18n>(
     () => ({ lang, setLang, t: (key, params) => translate(lang, key, params) }),
     [lang, setLang]
