@@ -66,6 +66,8 @@ const en = {
   'shading.open': 'open',
 
   'start.multiplayerBtn': 'Play with Friends',
+  'start.supportLink': '❤️ Support this project',
+  'start.sourceLink': 'View source on GitHub',
 
   'mp.back': '← Back',
   'mp.yourName': 'Your name',
@@ -170,6 +172,8 @@ const zh: Record<StringKey, string> = {
   'shading.open': '空心',
 
   'start.multiplayerBtn': '多人对战',
+  'start.supportLink': '❤️ 支持本项目',
+  'start.sourceLink': '在 GitHub 上查看源码',
 
   'mp.back': '← 返回',
   'mp.yourName': '你的名字',
@@ -273,6 +277,8 @@ const fr: Record<StringKey, string> = {
   'shading.open': 'vide',
 
   'start.multiplayerBtn': 'Jouer entre amis',
+  'start.supportLink': '❤️ Soutenir ce projet',
+  'start.sourceLink': 'Voir le code source sur GitHub',
 
   'mp.back': '← Retour',
   'mp.yourName': 'Votre nom',
@@ -376,6 +382,8 @@ const es: Record<StringKey, string> = {
   'shading.open': 'vacío',
 
   'start.multiplayerBtn': 'Jugar con amigos',
+  'start.supportLink': '❤️ Apoya este proyecto',
+  'start.sourceLink': 'Ver el código fuente en GitHub',
 
   'mp.back': '← Atrás',
   'mp.yourName': 'Tu nombre',
@@ -478,6 +486,8 @@ const ja: Record<StringKey, string> = {
   'shading.open': '白抜き',
 
   'start.multiplayerBtn': 'みんなで遊ぶ',
+  'start.supportLink': '❤️ このプロジェクトを応援する',
+  'start.sourceLink': 'GitHubでソースコードを見る',
 
   'mp.back': '← 戻る',
   'mp.yourName': 'あなたの名前',

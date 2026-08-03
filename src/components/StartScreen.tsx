@@ -45,6 +45,15 @@ export function StartScreen({ bestMs, onStart, onHowToPlay, onMultiplayer }: Sta
         <button type="button" className="text-btn" onClick={onMultiplayer}>
           {t('start.multiplayerBtn')}
         </button>
+        <div className="meta-links">
+          <a href="https://github.com/sponsors/dcmshi" target="_blank" rel="noopener noreferrer">
+            {t('start.supportLink')}
+          </a>
+          <span aria-hidden="true">·</span>
+          <a href="https://github.com/dcmshi/set-game" target="_blank" rel="noopener noreferrer">
+            {t('start.sourceLink')}
+          </a>
+        </div>
       </div>
       <a className="scroll-cue" href="#site-content">
         <span>{t('start.scrollCue')}</span>
