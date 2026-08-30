@@ -24,6 +24,7 @@ export function PaletteToggle() {
       type="button"
       className="icon-btn palette-btn"
       aria-label={t('palette.aria')}
+      title={t('palette.aria')}
       aria-pressed={palette === 'colorblind'}
       onClick={swap}
     >
