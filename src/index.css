@@ -279,6 +279,29 @@ button {
   transform: translateY(0);
 }
 
+/* Secondary action (e.g. Multiplayer on the start screen): a quiet outlined
+   pill that reads as a button, unlike the plain text links. */
+.secondary-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.65rem 1.75rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast);
+}
+@media (hover: hover) {
+  .secondary-btn:hover {
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+}
+.secondary-btn:active {
+  transform: translateY(0);
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;

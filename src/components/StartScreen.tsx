@@ -39,11 +39,11 @@ export function StartScreen({ bestMs, onStart, onHowToPlay, onMultiplayer }: Sta
         <button type="button" className="primary-btn" onClick={onStart}>
           {t('start.startBtn')}
         </button>
+        <button type="button" className="secondary-btn" onClick={onMultiplayer}>
+          {t('start.multiplayerBtn')}
+        </button>
         <button type="button" className="text-btn" onClick={onHowToPlay}>
           {t('start.howToPlayBtn')}
-        </button>
-        <button type="button" className="text-btn" onClick={onMultiplayer}>
-          {t('start.multiplayerBtn')}
         </button>
         <div className="meta-links">
           <a href="https://github.com/sponsors/dcmshi" target="_blank" rel="noopener noreferrer">
