@@ -22,6 +22,25 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
   const [confirmLeave, setConfirmLeave] = useState(false);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Live clock: socket events alone don't re-render often enough to drive the
+  // timer display, so tick on animation frames while a game is running.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (mp.phase !== 'playing') return;
+    let raf = 0;
+    let active = true;
+    const tick = () => {
+      if (!active) return;
+      setNow(Date.now());
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      active = false;
+      cancelAnimationFrame(raf);
+    };
+  }, [mp.phase]);
+
   // Flash the board red on an invalid claim.
   useEffect(() => {
     if (mp.lastClaim === 'invalid') {
@@ -74,7 +93,7 @@ export function MultiplayerApp({ serverUrl, initialCode, onExit }: MultiplayerAp
       {mp.phase === 'playing' && mp.you && (
         <div className="game mp-game">
           <header className="topbar">
-            <Timer ms={Math.max(0, Date.now() - mp.startedAt)} />
+            <Timer ms={Math.max(0, now - mp.startedAt)} />
             <div className="topbar-actions">
               <button type="button" className="quit-btn" onClick={() => setConfirmLeave(true)}>
                 {t('mp.leave')}
