@@ -30,6 +30,7 @@ const en = {
   'howto.closeAria': 'Close',
 
   'hud.deck': 'Deck',
+  'hud.sets': 'Sets',
   'hud.mistakes': 'Mistakes',
   'hud.hint': 'Hint (+15s)',
 
@@ -148,6 +149,7 @@ const zh: Record<StringKey, string> = {
   'howto.closeAria': '关闭',
 
   'hud.deck': '牌堆',
+  'hud.sets': '已找到',
   'hud.mistakes': '错误',
   'hud.hint': '提示 (+15秒)',
 
@@ -263,6 +265,7 @@ const fr: Record<StringKey, string> = {
   'howto.closeAria': 'Fermer',
 
   'hud.deck': 'Pioche',
+  'hud.sets': 'Sets trouvés',
   'hud.mistakes': 'Erreurs',
   'hud.hint': 'Indice (+15 s)',
 
@@ -378,6 +381,7 @@ const es: Record<StringKey, string> = {
   'howto.closeAria': 'Cerrar',
 
   'hud.deck': 'Mazo',
+  'hud.sets': 'Sets hallados',
   'hud.mistakes': 'Errores',
   'hud.hint': 'Pista (+15 s)',
 
@@ -492,6 +496,7 @@ const ja: Record<StringKey, string> = {
   'howto.closeAria': '閉じる',
 
   'hud.deck': '山札',
+  'hud.sets': '見つけたSet',
   'hud.mistakes': 'ミス',
   'hud.hint': 'ヒント（+15秒）',
 

@@ -442,6 +442,24 @@ button {
   font-size: 1rem;
 }
 
+/* Brief celebratory pop when a Set is banked; keyed remount replays it. */
+.sets-count {
+  animation: sets-pop 0.45s var(--ease-out);
+}
+
+@keyframes sets-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.45);
+    color: var(--accent);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .hint-btn {
   padding: 0.5rem 1.1rem;
   border-radius: 999px;
