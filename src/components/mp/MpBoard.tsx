@@ -42,7 +42,7 @@ export function MpBoard({ board, lockoutUntil, wrongFlash, onClaim }: MpBoardPro
   };
 
   return (
-    <div className={`mp-board-wrap${wrongFlash ? ' mp-wrong' : ''}`}>
+    <div className={`mp-board-wrap${wrongFlash ? ' mp-wrong' : ''}${locked ? ' mp-locked' : ''}`}>
       <div className="board">
         {board.map((card) => (
           <Card

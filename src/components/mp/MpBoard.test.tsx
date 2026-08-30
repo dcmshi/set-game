@@ -21,7 +21,7 @@ it('claims after three cards are selected, then clears selection', async () => {
   expect(onClaim).toHaveBeenCalledWith([board[0].id, board[1].id, board[2].id]);
 });
 
-it('shows a lockout overlay while locked out', () => {
+it('shows a lockout badge while locked out', () => {
   renderWithI18n(<MpBoard board={board} lockoutUntil={Date.now() + 5000} wrongFlash={false} onClaim={() => {}} />);
   expect(screen.getByText(/locked/i)).toBeInTheDocument();
 });
