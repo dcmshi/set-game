@@ -71,7 +71,9 @@ export function selectCard(state: GameState, id: string): GameState {
     ? state.selected.filter((x) => x !== id)
     : [...state.selected, id];
 
-  const next: GameState = { ...state, selected, hintedIds: [] };
+  // Keep hintedIds while the player builds their trio: the hint is what they
+  // are trying to click, so it only clears when the trio resolves.
+  const next: GameState = { ...state, selected };
   if (selected.length < 3) return next;
 
   const [a, b, c] = selected.map((sid) => next.board.find((x) => x.id === sid)!);
@@ -87,6 +89,7 @@ export function resolve(state: GameState): GameState {
       ...state,
       selected: [],
       pending: null,
+      hintedIds: [],
       penaltyMs: state.penaltyMs + WRONG_PENALTY_MS,
       mistakes: state.mistakes + 1,
     };

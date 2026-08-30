@@ -147,9 +147,35 @@ it('hint highlights a valid Set and costs time', () => {
   expect(findAnySet(cards)).not.toBeNull();
 });
 
-it('selecting a card clears an active hint', () => {
+it('hint highlight persists while selecting and clears when the trio resolves', () => {
   const s0 = newGame(9);
   const hinted = useHint(s0);
-  const s = selectCard(hinted, hinted.board[0].id);
+  // Clicking the first two hinted cards keeps the highlight in place.
+  let s = selectCard(hinted, hinted.hintedIds[0]);
+  expect(s.hintedIds).toHaveLength(3);
+  s = selectCard(s, hinted.hintedIds[1]);
+  expect(s.hintedIds).toHaveLength(3);
+  // Completing the trio and resolving it clears the hint.
+  s = selectCard(s, hinted.hintedIds[2]);
+  expect(s.pending!.valid).toBe(true);
+  s = resolve(s);
+  expect(s.hintedIds).toEqual([]);
+});
+
+it('hint highlight clears when a wrong trio resolves', () => {
+  const deck = generateDeck();
+  const board = [
+    deck.find((c) => c.id === '1-diamond-solid-red')!,
+    deck.find((c) => c.id === '1-diamond-solid-green')!,
+    deck.find((c) => c.id === '2-diamond-solid-red')!,
+  ];
+  const state: GameState = {
+    deck: [], board, selected: [], pending: null, status: 'playing',
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [board[0].id, board[1].id, board[2].id],
+  };
+  let s = board.reduce((acc, c) => selectCard(acc, c.id), state);
+  expect(s.pending!.valid).toBe(false);
+  expect(s.hintedIds).toHaveLength(3);
+  s = resolve(s);
   expect(s.hintedIds).toEqual([]);
 });
