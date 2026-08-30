@@ -2,8 +2,9 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { newGame } from './game/engine';
-import { findAnySet } from './game/set';
+import { findAnySet, isSet } from './game/set';
 import { ariaLabel } from './components/Card';
+import type { Card } from './game/cards';
 
 // jsdom has no WebSocket; stub one that never opens so the multiplayer container
 // can mount without a real connection.
@@ -40,6 +41,35 @@ it('removes a valid Set after it is selected', async () => {
     () => expect(screen.queryByRole('button', { name: ariaLabel(set[0]) })).not.toBeInTheDocument(),
     { timeout: 1500 }
   );
+});
+
+it('flashes a +5s chip under the timer on a wrong pick', async () => {
+  const seed = 5;
+  const board = newGame(seed).board;
+  let triple: Card[] | null = null;
+  outer: for (let i = 0; i < board.length; i++) {
+    for (let j = i + 1; j < board.length; j++) {
+      for (let k = j + 1; k < board.length; k++) {
+        if (!isSet(board[i], board[j], board[k])) {
+          triple = [board[i], board[j], board[k]];
+          break outer;
+        }
+      }
+    }
+  }
+  render(<App seed={seed} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  for (const card of triple!) {
+    await userEvent.click(screen.getByRole('button', { name: ariaLabel(card) }));
+  }
+  expect(await screen.findByText('+5s')).toBeInTheDocument();
+});
+
+it('flashes a +15s chip under the timer when a hint is taken', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  await userEvent.click(screen.getByRole('button', { name: /hint/i }));
+  expect(await screen.findByText('+15s')).toBeInTheDocument();
 });
 
 it('switches to multiplayer mode without crashing (hooks-order regression)', async () => {

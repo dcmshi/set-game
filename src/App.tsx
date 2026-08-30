@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useGame } from './state/useGame';
 import { StartScreen } from './components/StartScreen';
 import { Board } from './components/Board';
@@ -35,6 +35,18 @@ export default function App({ seed }: { seed?: number }) {
   const [confirmQuit, setConfirmQuit] = useState(false);
   const [mode, setMode] = useState<'single' | 'multi'>(DEEP_LINK ? 'multi' : 'single');
   const message = feedbackMessage(g, t);
+
+  // Flash a "+Ns" chip under the timer whenever the penalty total grows
+  // (wrong pick +5s, hint +15s) so the jump in the clock is explained.
+  const [penalty, setPenalty] = useState<{ id: number; secs: number } | null>(null);
+  const lastPenaltyMs = useRef(0);
+  useEffect(() => {
+    const total = g.state.penaltyMs;
+    if (total > lastPenaltyMs.current) {
+      setPenalty({ id: total, secs: (total - lastPenaltyMs.current) / 1000 });
+    }
+    lastPenaltyMs.current = total;
+  }, [g.state.penaltyMs]);
 
   const openHowTo = useCallback(() => {
     g.pause();
@@ -87,6 +99,16 @@ export default function App({ seed }: { seed?: number }) {
         <div className="game">
           <header className="topbar">
             <Timer ms={g.displayMs} />
+            {penalty && (
+              <span
+                key={penalty.id}
+                className="penalty-chip"
+                aria-hidden="true"
+                onAnimationEnd={() => setPenalty(null)}
+              >
+                +{penalty.secs}s
+              </span>
+            )}
             <div className="topbar-actions">
               <button type="button" className="quit-btn" onClick={() => setConfirmQuit(true)}>
                 {t('qol.quit')}
