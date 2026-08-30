@@ -496,7 +496,7 @@ button {
   aspect-ratio: 3 / 2;
   padding: clamp(0.4rem, 2vw, 0.75rem);
   background: linear-gradient(165deg, var(--card-bg), var(--card-bg-2));
-  border: none;
+  border: 1px solid var(--card-border);
   outline: 4px solid transparent;
   outline-offset: -4px;
   border-radius: var(--radius-md);
