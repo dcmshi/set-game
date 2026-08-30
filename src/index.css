@@ -306,6 +306,26 @@ button {
   font-weight: 700;
   margin: 0;
 }
+.record-delta {
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+.win-stats {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+.win-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
 
 /* -------------------------------------------------------------------------
    Game layout

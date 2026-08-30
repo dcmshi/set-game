@@ -15,6 +15,7 @@ export interface UseGame {
   displayMs: number;
   bestMs: number | null;
   isRecord: boolean;
+  previousBestMs: number | null;
   start: () => void;
   select: (id: string) => void;
   hint: () => void;
@@ -29,6 +30,7 @@ export function useGame(seed?: number): UseGame {
   const [screen, setScreen] = useState<Screen>('start');
   const [bestMs, setBestMs] = useState<number | null>(() => getBestMs());
   const [isRecord, setIsRecord] = useState(false);
+  const [previousBestMs, setPreviousBestMs] = useState<number | null>(null);
   const [displayMs, setDisplayMs] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -84,6 +86,7 @@ export function useGame(seed?: number): UseGame {
     const result = recordTime(finalMs);
     setBestMs(result.best);
     setIsRecord(result.isRecord);
+    setPreviousBestMs(result.previous);
     setDisplayMs(finalMs);
     setScreen('won');
   }, [state.status, screen, state.penaltyMs]);
@@ -92,6 +95,7 @@ export function useGame(seed?: number): UseGame {
     dispatch({ type: 'START', seed });
     timerRef.current = startTimer(performance.now());
     setIsRecord(false);
+    setPreviousBestMs(null);
     setDisplayMs(0);
     setPaused(false);
     setScreen('playing');
@@ -106,5 +110,5 @@ export function useGame(seed?: number): UseGame {
     setScreen('start');
   }, []);
 
-  return { screen, state, displayMs, bestMs, isRecord, start, select, hint, paused, pause, resume, quit };
+  return { screen, state, displayMs, bestMs, isRecord, previousBestMs, start, select, hint, paused, pause, resume, quit };
 }

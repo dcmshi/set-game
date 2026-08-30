@@ -12,12 +12,12 @@ it('stores and reads a best time', () => {
 });
 
 it('recordTime saves a first result as a record', () => {
-  expect(recordTime(5000)).toEqual({ best: 5000, isRecord: true });
+  expect(recordTime(5000)).toEqual({ best: 5000, isRecord: true, previous: null });
   expect(getBestMs()).toBe(5000);
 });
 
 it('recordTime only beats a faster time', () => {
   recordTime(5000);
-  expect(recordTime(6000)).toEqual({ best: 5000, isRecord: false });
-  expect(recordTime(4000)).toEqual({ best: 4000, isRecord: true });
+  expect(recordTime(6000)).toEqual({ best: 5000, isRecord: false, previous: 5000 });
+  expect(recordTime(4000)).toEqual({ best: 4000, isRecord: true, previous: 5000 });
 });

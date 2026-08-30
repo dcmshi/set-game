@@ -141,6 +141,9 @@ export default function App({ seed }: { seed?: number }) {
           timeMs={g.displayMs}
           bestMs={g.bestMs ?? g.displayMs}
           isRecord={g.isRecord}
+          previousBestMs={g.previousBestMs}
+          mistakes={g.state.mistakes}
+          hintsUsed={g.state.hintsUsed}
           onPlayAgain={g.start}
         />
       )}

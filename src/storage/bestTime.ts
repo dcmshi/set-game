@@ -19,11 +19,11 @@ export function setBestMs(ms: number): void {
   }
 }
 
-export function recordTime(ms: number): { best: number; isRecord: boolean } {
+export function recordTime(ms: number): { best: number; isRecord: boolean; previous: number | null } {
   const current = getBestMs();
   if (current === null || ms < current) {
     setBestMs(ms);
-    return { best: Math.round(ms), isRecord: true };
+    return { best: Math.round(ms), isRecord: true, previous: current };
   }
-  return { best: current, isRecord: false };
+  return { best: current, isRecord: false, previous: current };
 }

@@ -44,7 +44,9 @@ const MODALS: { name: string; label: RegExp; body: (close: () => void) => ReactN
   {
     name: 'WinModal',
     label: /you won/i,
-    body: (close) => <WinModal timeMs={65400} bestMs={65400} isRecord={false} onPlayAgain={close} />,
+    body: (close) => (
+      <WinModal timeMs={65400} bestMs={65400} isRecord={false} previousBestMs={65400} mistakes={0} hintsUsed={0} onPlayAgain={close} />
+    ),
   },
 ];
 
