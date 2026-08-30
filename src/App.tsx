@@ -48,6 +48,16 @@ export default function App({ seed }: { seed?: number }) {
     lastPenaltyMs.current = total;
   }, [g.state.penaltyMs]);
 
+  // Toast when the engine deals extra cards because the board holds no Set —
+  // otherwise the board just grows by three with no explanation.
+  const [dealNotice, setDealNotice] = useState(0);
+  const lastExtraDeals = useRef(0);
+  useEffect(() => {
+    const n = g.state.extraDeals;
+    if (n > lastExtraDeals.current) setDealNotice(n);
+    lastExtraDeals.current = n;
+  }, [g.state.extraDeals]);
+
   const openHowTo = useCallback(() => {
     g.pause();
     setHowToOpen(true);
@@ -133,6 +143,16 @@ export default function App({ seed }: { seed?: number }) {
             onHint={g.hint}
             hintDisabled={g.state.pending !== null}
           />
+          {dealNotice > 0 && (
+            <p
+              key={dealNotice}
+              className="deal-toast"
+              role="status"
+              onAnimationEnd={() => setDealNotice(0)}
+            >
+              {t('game.dealtExtra')}
+            </p>
+          )}
         </div>
       )}
 

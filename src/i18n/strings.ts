@@ -60,6 +60,8 @@ const en = {
   'feedback.notSet': 'Not a Set. Five second penalty.',
   'feedback.hint': 'Hint shown.',
 
+  'game.dealtExtra': 'No Set on the table — 3 more cards dealt',
+
   'color.red': 'red',
   'color.green': 'green',
   'color.purple': 'purple',
@@ -171,6 +173,8 @@ const zh: Record<StringKey, string> = {
   'feedback.notSet': '不是一组 Set，加罚五秒。',
   'feedback.hint': '已显示提示。',
 
+  'game.dealtExtra': '桌面上没有 Set——再发 3 张牌',
+
   'color.red': '红色',
   'color.green': '绿色',
   'color.purple': '紫色',
@@ -280,6 +284,8 @@ const fr: Record<StringKey, string> = {
   'feedback.setFound': 'Set trouvé !',
   'feedback.notSet': "Ce n'est pas un Set. Pénalité de cinq secondes.",
   'feedback.hint': 'Indice affiché.',
+
+  'game.dealtExtra': 'Aucun Set sur la table — 3 cartes de plus distribuées',
 
   'color.red': 'rouge',
   'color.green': 'vert',
@@ -391,6 +397,8 @@ const es: Record<StringKey, string> = {
   'feedback.notSet': 'No es un Set. Penalización de cinco segundos.',
   'feedback.hint': 'Pista mostrada.',
 
+  'game.dealtExtra': 'No hay ningún Set en la mesa — se reparten 3 cartas más',
+
   'color.red': 'rojo',
   'color.green': 'verde',
   'color.purple': 'morado',
@@ -499,6 +507,8 @@ const ja: Record<StringKey, string> = {
   'feedback.setFound': 'Setを見つけました！',
   'feedback.notSet': 'Setではありません。5秒のペナルティ。',
   'feedback.hint': 'ヒントを表示しました。',
+
+  'game.dealtExtra': '場にSetがありません——3枚追加で配りました',
 
   'color.red': '赤',
   'color.green': '緑',

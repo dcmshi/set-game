@@ -1,4 +1,4 @@
-import { newGame, INITIAL_DEAL, selectCard, resolve, WRONG_PENALTY_MS, useHint, HINT_PENALTY_MS } from './engine';
+import { newGame, INITIAL_DEAL, DEAL_INCREMENT, selectCard, resolve, WRONG_PENALTY_MS, useHint, HINT_PENALTY_MS } from './engine';
 import type { GameState } from './engine';
 import { boardHasSet, findAnySet } from './set';
 import { generateDeck } from './cards';
@@ -71,7 +71,7 @@ it('resolving an invalid pick adds a penalty and a mistake', () => {
   ];
   const state: GameState = {
     deck: [], board, selected: [], pending: null, status: 'playing',
-    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [], extraDeals: 0,
   };
   let s = board.reduce((acc, c) => selectCard(acc, c.id), state);
   expect(s.pending!.valid).toBe(false);
@@ -90,7 +90,7 @@ it('wins when the last Set clears an empty deck', () => {
   ];
   const state: GameState = {
     deck: [], board: [...set], selected: [], pending: null, status: 'playing',
-    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [], extraDeals: 0,
   };
   let s = set.reduce((acc, c) => selectCard(acc, c.id), state);
   s = resolve(s);
@@ -104,7 +104,7 @@ it('shrinks a 15-card board back to 12 after a valid Set (no refill)', () => {
   const remainingDeck = deck0.slice(15);
   const state: GameState = {
     deck: remainingDeck, board, selected: [], pending: null, status: 'playing',
-    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [], extraDeals: 0,
   };
   const setIds = [board[0].id, board[1].id, board[2].id];
   let s = setIds.reduce((acc, id) => selectCard(acc, id), state);
@@ -120,7 +120,7 @@ it('replaces a matched Set in place, keeping all other card positions fixed', ()
   const rest = deck0.slice(12); // deck still has cards
   const state: GameState = {
     deck: rest, board, selected: [], pending: null, status: 'playing',
-    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [],
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [], extraDeals: 0,
   };
   const removed = [board[0].id, board[1].id, board[2].id];
   let s = removed.reduce((acc, id) => selectCard(acc, id), state);
@@ -171,11 +171,35 @@ it('hint highlight clears when a wrong trio resolves', () => {
   ];
   const state: GameState = {
     deck: [], board, selected: [], pending: null, status: 'playing',
-    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [board[0].id, board[1].id, board[2].id],
+    penaltyMs: 0, mistakes: 0, hintsUsed: 0, hintedIds: [board[0].id, board[1].id, board[2].id], extraDeals: 0,
   };
   let s = board.reduce((acc, c) => selectCard(acc, c.id), state);
   expect(s.pending!.valid).toBe(false);
   expect(s.hintedIds).toHaveLength(3);
   s = resolve(s);
   expect(s.hintedIds).toEqual([]);
+});
+
+it('counts an extra deal when a claim leaves the board without a Set', () => {
+  // Search seeds for a claim whose refilled board still holds no Set, so
+  // resolve() must deal 3 extra cards.
+  for (let seed = 0; seed < 2000; seed++) {
+    const s0 = newGame(seed);
+    if (s0.board.length !== INITIAL_DEAL) continue;
+    const set = findAnySet(s0.board);
+    if (!set) continue;
+    let s = set.reduce((acc, c) => selectCard(acc, c.id), s0);
+    s = resolve(s);
+    if (s.extraDeals === 0) continue;
+    expect(s.extraDeals).toBe(1);
+    expect(s.board.length).toBe(INITIAL_DEAL + DEAL_INCREMENT);
+    return;
+  }
+  throw new Error('no seed in range produced a Set-less board after a claim');
+});
+
+it('does not count the opening deal as an extra deal', () => {
+  for (let seed = 0; seed < 200; seed++) {
+    expect(newGame(seed).extraDeals).toBe(0);
+  }
 });

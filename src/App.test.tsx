@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
-import { newGame } from './game/engine';
+import { newGame, selectCard, resolve } from './game/engine';
 import { findAnySet, isSet } from './game/set';
 import { ariaLabel } from './components/Card';
 import type { Card } from './game/cards';
@@ -70,6 +70,31 @@ it('flashes a +15s chip under the timer when a hint is taken', async () => {
   await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
   await userEvent.click(screen.getByRole('button', { name: /hint/i }));
   expect(await screen.findByText('+15s')).toBeInTheDocument();
+});
+
+it('announces when extra cards are dealt because no Set is on the table', async () => {
+  // Find a seed whose refilled board still holds no Set after claiming one,
+  // forcing the engine to deal 3 extra cards mid-game.
+  let seed = -1;
+  let setCards: Card[] | null = null;
+  for (let s = 0; s < 2000; s++) {
+    const g = newGame(s);
+    const set = findAnySet(g.board);
+    if (!set) continue;
+    const after = resolve(set.reduce((acc, c) => selectCard(acc, c.id), g));
+    if (after.extraDeals > 0) {
+      seed = s;
+      setCards = set;
+      break;
+    }
+  }
+  expect(seed).toBeGreaterThanOrEqual(0);
+  render(<App seed={seed} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  for (const card of setCards!) {
+    await userEvent.click(screen.getByRole('button', { name: ariaLabel(card) }));
+  }
+  expect(await screen.findByText(/no set on the table/i, undefined, { timeout: 2000 })).toBeInTheDocument();
 });
 
 it('switches to multiplayer mode without crashing (hooks-order regression)', async () => {

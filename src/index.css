@@ -375,6 +375,25 @@ button {
   animation: penalty-float 1.1s var(--ease-out) forwards;
 }
 
+/* Transient note shown when the engine deals extra cards because the board
+   holds no Set — explains why the board suddenly grew. */
+.deal-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 6px 18px var(--surface-shadow);
+  pointer-events: none;
+  animation: toast-in-out 2.6s var(--ease-out) forwards;
+}
+
 .hud {
   display: flex;
   gap: 0.75rem;
@@ -614,6 +633,21 @@ button {
   to {
     opacity: 0;
     transform: translate(-50%, -0.9rem);
+  }
+}
+
+@keyframes toast-in-out {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  10%, 80% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0);
   }
 }
 

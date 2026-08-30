@@ -24,6 +24,9 @@ export interface GameState {
   mistakes: number;
   hintsUsed: number;
   hintedIds: string[];
+  // How many times the game dealt extra cards mid-play because the board held
+  // no Set — the UI watches this to explain why the board suddenly grew.
+  extraDeals: number;
 }
 
 // Move cards from deck to board until board reaches `target` (or deck empties).
@@ -35,10 +38,13 @@ function dealToBoard(state: GameState, target: number): GameState {
 }
 
 // Guarantee a Set exists on the board, dealing 3 at a time while possible.
-function ensureSetOrDeal(state: GameState): GameState {
+// countDeals: the opening deal is unremarkable, but a mid-game deal deserves
+// an on-screen explanation, so only resolve() asks for the count.
+function ensureSetOrDeal(state: GameState, countDeals = false): GameState {
   let s = state;
   while (!boardHasSet(s.board) && s.deck.length > 0) {
     s = dealToBoard(s, s.board.length + DEAL_INCREMENT);
+    if (countDeals) s = { ...s, extraDeals: s.extraDeals + 1 };
   }
   return s;
 }
@@ -55,6 +61,7 @@ export function newGame(seed: number = Date.now()): GameState {
     mistakes: 0,
     hintsUsed: 0,
     hintedIds: [],
+    extraDeals: 0,
   };
   state = dealToBoard(state, INITIAL_DEAL);
   state = ensureSetOrDeal(state);
@@ -132,7 +139,7 @@ export function resolve(state: GameState): GameState {
     pending: null,
     hintedIds: [],
   };
-  s = ensureSetOrDeal(s);
+  s = ensureSetOrDeal(s, true);
   if (s.deck.length === 0 && !boardHasSet(s.board)) s = { ...s, status: 'won' };
   return s;
 }
