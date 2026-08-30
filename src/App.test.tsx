@@ -80,6 +80,24 @@ it('takes a hint when H is pressed during play', async () => {
   expect(screen.getAllByRole('button', { name: /hinted/i })).toHaveLength(3);
 });
 
+it('pauses from the topbar and resumes from the overlay', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  await userEvent.click(screen.getByRole('button', { name: /pause/i }));
+  const dialog = screen.getByRole('dialog', { name: /paused/i });
+  await userEvent.click(within(dialog).getByRole('button', { name: /resume/i }));
+  expect(screen.queryByRole('dialog', { name: /paused/i })).not.toBeInTheDocument();
+});
+
+it('pauses and resumes with Escape', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  await userEvent.keyboard('{Escape}');
+  expect(screen.getByRole('dialog', { name: /paused/i })).toBeInTheDocument();
+  await userEvent.keyboard('{Escape}');
+  expect(screen.queryByRole('dialog', { name: /paused/i })).not.toBeInTheDocument();
+});
+
 it('announces when extra cards are dealt because no Set is on the table', async () => {
   // Find a seed whose refilled board still holds no Set after claiming one,
   // forcing the engine to deal 3 extra cards mid-game.

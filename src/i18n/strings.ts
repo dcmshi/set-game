@@ -106,6 +106,9 @@ const en = {
   'mp.errGeneric': 'Something went wrong. Try again.',
 
   'qol.quit': 'Quit',
+  'qol.pauseAria': 'Pause',
+  'qol.paused': 'Paused',
+  'qol.resume': 'Resume',
   'qol.quitTitle': 'Quit game?',
   'qol.leaveTitle': 'Leave game?',
   'qol.quitBodySingle': 'Your current game will be lost.',
@@ -219,6 +222,9 @@ const zh: Record<StringKey, string> = {
   'mp.errGeneric': '出错了，请重试。',
 
   'qol.quit': '退出',
+  'qol.pauseAria': '暂停',
+  'qol.paused': '已暂停',
+  'qol.resume': '继续',
   'qol.quitTitle': '退出游戏？',
   'qol.leaveTitle': '离开游戏？',
   'qol.quitBodySingle': '当前的游戏进度将会丢失。',
@@ -332,6 +338,9 @@ const fr: Record<StringKey, string> = {
   'mp.errGeneric': "Une erreur s'est produite. Réessayez.",
 
   'qol.quit': 'Quitter',
+  'qol.pauseAria': 'Mettre en pause',
+  'qol.paused': 'En pause',
+  'qol.resume': 'Reprendre',
   'qol.quitTitle': 'Abandonner la partie ?',
   'qol.leaveTitle': 'Quitter la partie ?',
   'qol.quitBodySingle': 'Votre partie en cours sera perdue.',
@@ -444,6 +453,9 @@ const es: Record<StringKey, string> = {
   'mp.errGeneric': 'Algo salió mal. Inténtalo de nuevo.',
 
   'qol.quit': 'Salir',
+  'qol.pauseAria': 'Pausa',
+  'qol.paused': 'En pausa',
+  'qol.resume': 'Reanudar',
   'qol.quitTitle': '¿Salir de la partida?',
   'qol.leaveTitle': '¿Salir de la sala?',
   'qol.quitBodySingle': 'Se perderá tu partida actual.',
@@ -554,6 +566,9 @@ const ja: Record<StringKey, string> = {
   'mp.errGeneric': 'エラーが発生しました。もう一度お試しください。',
 
   'qol.quit': '終了',
+  'qol.pauseAria': '一時停止',
+  'qol.paused': '一時停止中',
+  'qol.resume': '再開',
   'qol.quitTitle': 'ゲームを終了しますか？',
   'qol.leaveTitle': 'ゲームから退出しますか？',
   'qol.quitBodySingle': '現在のゲームは失われます。',

@@ -6,6 +6,7 @@ import { Timer } from './components/Timer';
 import { Hud } from './components/Hud';
 import { WinModal } from './components/WinModal';
 import { HowToPlay } from './components/HowToPlay';
+import { PauseDialog } from './components/PauseDialog';
 import { ConfirmDialog } from './components/ConfirmDialog';
 import { LanguageToggle } from './components/LanguageToggle';
 import { SetSvgDefs } from './components/SetSvgDefs';
@@ -58,18 +59,23 @@ export default function App({ seed }: { seed?: number }) {
     lastExtraDeals.current = n;
   }, [g.state.extraDeals]);
 
-  // Keyboard: H asks for a hint (arrows + Enter already cover the cards).
-  const hint = g.hint;
+  // Keyboard: H asks for a hint (arrows + Enter already cover the cards) and
+  // Escape pauses. While paused, the PauseDialog owns Escape for resuming.
+  const { hint, paused, pause, resume } = g;
   useEffect(() => {
     if (g.screen !== 'playing' || howToOpen || confirmQuit) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== 'h' || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
       if ((e.target as HTMLElement).closest('input, select, textarea')) return;
-      hint();
+      if (e.key === 'Escape') {
+        if (!paused) pause();
+        return;
+      }
+      if (e.key.toLowerCase() === 'h' && !paused) hint();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [g.screen, hint, howToOpen, confirmQuit]);
+  }, [g.screen, hint, paused, pause, resume, howToOpen, confirmQuit]);
 
   const openHowTo = useCallback(() => {
     g.pause();
@@ -133,6 +139,15 @@ export default function App({ seed }: { seed?: number }) {
               </span>
             )}
             <div className="topbar-actions">
+              <button
+                type="button"
+                className="icon-btn"
+                aria-label={t('qol.pauseAria')}
+                title={t('qol.pauseAria')}
+                onClick={g.pause}
+              >
+                ⏸
+              </button>
               <button type="button" className="quit-btn" onClick={() => setConfirmQuit(true)}>
                 {t('qol.quit')}
               </button>
@@ -182,6 +197,10 @@ export default function App({ seed }: { seed?: number }) {
       )}
 
       {howToOpen && <HowToPlay onClose={closeHowTo} />}
+
+      {g.paused && !howToOpen && g.screen === 'playing' && (
+        <PauseDialog onResume={g.resume} onQuit={() => setConfirmQuit(true)} />
+      )}
 
       {confirmQuit && (
         <ConfirmDialog
