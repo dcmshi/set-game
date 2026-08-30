@@ -445,8 +445,12 @@ button {
   transform: translateY(-1px) scale(1.005);
 }
 
+/* Focus is a dashed ring stepped outside the card so it stays distinct from
+   the solid, filled-in selection ring below. */
 .card:focus-visible {
   outline-color: var(--accent);
+  outline-style: dashed;
+  outline-offset: 2px;
 }
 
 .card.selected {
