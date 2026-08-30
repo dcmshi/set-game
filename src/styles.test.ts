@@ -170,9 +170,12 @@ describe('card deal-in animation', () => {
     expect(body('.card')).not.toMatch(/animation:[^;]*\bboth\b/);
   });
 
-  it('releases its transform on hinted cards too', () => {
-    expect(body('.card.hinted')).toMatch(/animation:[^;]*deal-in[^;]*\bbackwards\b/);
-    expect(body('.card.hinted')).not.toMatch(/animation:[^;]*\bboth\b/);
+  it('keeps the hint glow off the card so deal-in never restarts', () => {
+    // Toggling .hinted must not change the card's own `animation`: any change
+    // restarts deal-in and the card re-fades-in mid-game. The glow runs on a
+    // pseudo-element instead.
+    expect(body('.card.hinted')).not.toMatch(/animation\s*:/);
+    expect(body('.card.hinted::after')).toMatch(/animation:[^;]*hint-glow/);
   });
 });
 

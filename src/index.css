@@ -540,10 +540,20 @@ button {
   transform: translateY(-2px);
 }
 
+/* The glow lives on a pseudo-element so toggling .hinted never changes the
+   card's own `animation` — changing it would restart deal-in and the card
+   would re-fade-in mid-game. */
 .card.hinted {
   outline-color: var(--hint);
   outline-width: 5px;
-  animation: deal-in var(--dur-med) var(--ease-out) backwards, hint-glow 1.2s ease-in-out infinite;
+}
+.card.hinted::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: calc(var(--radius-md) + 5px);
+  pointer-events: none;
+  animation: hint-glow 1.2s ease-in-out infinite;
 }
 
 .card.correct {
@@ -588,16 +598,16 @@ button {
 
 /* Stagger the deal-in animation across the first couple of rows so a fresh
    board feels dealt rather than all appearing in one flat instant. */
-.board .card:nth-child(1) { animation-delay: 0ms, 0ms; }
-.board .card:nth-child(2) { animation-delay: 20ms, 0ms; }
-.board .card:nth-child(3) { animation-delay: 40ms, 0ms; }
-.board .card:nth-child(4) { animation-delay: 60ms, 0ms; }
-.board .card:nth-child(5) { animation-delay: 80ms, 0ms; }
-.board .card:nth-child(6) { animation-delay: 100ms, 0ms; }
-.board .card:nth-child(7) { animation-delay: 120ms, 0ms; }
-.board .card:nth-child(8) { animation-delay: 140ms, 0ms; }
-.board .card:nth-child(9) { animation-delay: 160ms, 0ms; }
-.board .card:nth-child(n+10) { animation-delay: 180ms, 0ms; }
+.board .card:nth-child(1) { animation-delay: 0ms; }
+.board .card:nth-child(2) { animation-delay: 20ms; }
+.board .card:nth-child(3) { animation-delay: 40ms; }
+.board .card:nth-child(4) { animation-delay: 60ms; }
+.board .card:nth-child(5) { animation-delay: 80ms; }
+.board .card:nth-child(6) { animation-delay: 100ms; }
+.board .card:nth-child(7) { animation-delay: 120ms; }
+.board .card:nth-child(8) { animation-delay: 140ms; }
+.board .card:nth-child(9) { animation-delay: 160ms; }
+.board .card:nth-child(n+10) { animation-delay: 180ms; }
 
 /* -------------------------------------------------------------------------
    Keyframes
@@ -674,18 +684,13 @@ button {
   }
 }
 
+/* Runs on the .card.hinted::after ring, so only the halo pulses. */
 @keyframes hint-glow {
   0%, 100% {
-    box-shadow:
-      0 2px 0 rgba(255, 255, 255, 0.5) inset,
-      0 0 0 6px color-mix(in srgb, var(--hint) 55%, transparent),
-      0 10px 20px var(--card-shadow);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--hint) 55%, transparent);
   }
   50% {
-    box-shadow:
-      0 2px 0 rgba(255, 255, 255, 0.5) inset,
-      0 0 0 10px color-mix(in srgb, var(--hint) 40%, transparent),
-      0 10px 20px var(--card-shadow);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--hint) 40%, transparent);
   }
 }
 
