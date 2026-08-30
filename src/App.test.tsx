@@ -72,6 +72,14 @@ it('flashes a +15s chip under the timer when a hint is taken', async () => {
   expect(await screen.findByText('+15s')).toBeInTheDocument();
 });
 
+it('takes a hint when H is pressed during play', async () => {
+  render(<App seed={5} />);
+  await userEvent.click(screen.getByRole('button', { name: /^start$/i }));
+  expect(screen.queryByRole('button', { name: /hinted/i })).not.toBeInTheDocument();
+  await userEvent.keyboard('h');
+  expect(screen.getAllByRole('button', { name: /hinted/i })).toHaveLength(3);
+});
+
 it('announces when extra cards are dealt because no Set is on the table', async () => {
   // Find a seed whose refilled board still holds no Set after claiming one,
   // forcing the engine to deal 3 extra cards mid-game.

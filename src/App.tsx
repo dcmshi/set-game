@@ -58,6 +58,19 @@ export default function App({ seed }: { seed?: number }) {
     lastExtraDeals.current = n;
   }, [g.state.extraDeals]);
 
+  // Keyboard: H asks for a hint (arrows + Enter already cover the cards).
+  const hint = g.hint;
+  useEffect(() => {
+    if (g.screen !== 'playing' || howToOpen || confirmQuit) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 'h' || e.metaKey || e.ctrlKey || e.altKey) return;
+      if ((e.target as HTMLElement).closest('input, select, textarea')) return;
+      hint();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [g.screen, hint, howToOpen, confirmQuit]);
+
   const openHowTo = useCallback(() => {
     g.pause();
     setHowToOpen(true);
