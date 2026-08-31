@@ -26,6 +26,9 @@ const en = {
     'Colors are red, red, purple — two the same and one different. Each feature must be all-same or all-different.',
   'howto.invalidBWhy':
     'Shadings are solid, solid, striped — neither all-same nor all-different.',
+  'howto.practiceTitle': 'Try it — find the Set among these six',
+  'howto.practiceYes': "That's a Set! 🎉",
+  'howto.practiceNo': 'Not a Set — try again',
   'howto.close': 'Got it',
   'howto.closeAria': 'Close',
 
@@ -145,6 +148,9 @@ const zh: Record<StringKey, string> = {
     '颜色是红、红、紫——两张相同、一张不同。每种特征都必须完全相同或完全不同。',
   'howto.invalidBWhy':
     '填充是实心、实心、条纹——既不完全相同也不完全不同。',
+  'howto.practiceTitle': '试一试——从这六张牌中找出 Set',
+  'howto.practiceYes': '这就是一组 Set！🎉',
+  'howto.practiceNo': '不是 Set——再试一次',
   'howto.close': '明白了',
   'howto.closeAria': '关闭',
 
@@ -261,6 +267,9 @@ const fr: Record<StringKey, string> = {
     'Les couleurs sont rouge, rouge, violet — deux identiques et une différente. Chaque caractéristique doit être toute identique ou toute différente.',
   'howto.invalidBWhy':
     'Les remplissages sont plein, plein, hachuré — ni tous identiques, ni tous différents.',
+  'howto.practiceTitle': 'À vous de jouer — trouvez le Set parmi ces six cartes',
+  'howto.practiceYes': "C'est un Set ! 🎉",
+  'howto.practiceNo': "Pas un Set — réessayez",
   'howto.close': 'Compris',
   'howto.closeAria': 'Fermer',
 
@@ -377,6 +386,9 @@ const es: Record<StringKey, string> = {
     'Los colores son rojo, rojo y morado: dos iguales y uno distinto. Cada característica debe ser toda igual o toda distinta.',
   'howto.invalidBWhy':
     'Los rellenos son sólido, sólido y rayado: ni todos iguales ni todos distintos.',
+  'howto.practiceTitle': 'Pruébalo — encuentra el Set entre estas seis cartas',
+  'howto.practiceYes': '¡Esto es un Set! 🎉',
+  'howto.practiceNo': 'No es un Set — inténtalo de nuevo',
   'howto.close': 'Entendido',
   'howto.closeAria': 'Cerrar',
 
@@ -492,6 +504,9 @@ const ja: Record<StringKey, string> = {
     '色が赤・赤・紫——2枚が同じで1枚だけ違います。各特徴はすべて同じかすべて異なる必要があります。',
   'howto.invalidBWhy':
     '塗りが塗りつぶし・塗りつぶし・縞模様——すべて同じでもすべて異なるでもありません。',
+  'howto.practiceTitle': 'やってみよう——この6枚からSetを見つけてください',
+  'howto.practiceYes': 'それがSetです！🎉',
+  'howto.practiceNo': 'Setではありません——もう一度試してください',
   'howto.close': 'わかりました',
   'howto.closeAria': '閉じる',
 

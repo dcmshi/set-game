@@ -946,6 +946,28 @@ button {
   line-height: 1.5;
 }
 
+/* Interactive practice row: six clickable cards hiding exactly one Set. */
+.howto-practice .howto-example-cards {
+  flex-wrap: wrap;
+}
+button.example-card {
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    outline-color 120ms var(--ease-out);
+}
+@media (hover: hover) {
+  button.example-card:hover {
+    transform: translateY(-2px);
+  }
+}
+.practice-card.selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* -------------------------------------------------------------------------
    Multiplayer
    ---------------------------------------------------------------------- */
