@@ -1,3 +1,4 @@
+import http from 'node:http';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomManager, type Room } from './rooms';
 import type { ClientMessage, ServerMessage } from '../../src/mp/protocol';
@@ -15,7 +16,19 @@ export function createServer(opts: { port?: number; now?: () => number } = {}) {
   const port = opts.port ?? Number(process.env.PORT ?? 8080);
   const now = opts.now ?? (() => Date.now());
   const rooms = new RoomManager(now);
-  const wss = new WebSocketServer({ port });
+  // Plain HTTP responder for health checks (Render pings the port before
+  // routing traffic); WebSocket upgrades are handled by the attached wss.
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && (req.url === '/' || req.url === '/healthz')) {
+      res.writeHead(200, { 'content-type': 'text/plain' });
+      res.end('ok');
+      return;
+    }
+    res.writeHead(404, { 'content-type': 'text/plain' });
+    res.end('not found');
+  });
+  const wss = new WebSocketServer({ server });
+  server.listen(port);
   const conns = new Map<WebSocket, Conn>();
 
   const send = (ws: WebSocket, msg: ServerMessage) => {
@@ -143,7 +156,7 @@ export function createServer(opts: { port?: number; now?: () => number } = {}) {
       new Promise<void>((resolve) => {
         clearInterval(sweepTimer);
         for (const ws of conns.keys()) ws.terminate();
-        wss.close(() => resolve());
+        wss.close(() => server.close(() => resolve()));
       }),
   };
 }

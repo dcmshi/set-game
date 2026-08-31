@@ -15,6 +15,7 @@ services:
     plan: free
     buildCommand: npm install
     startCommand: npm run server
+    healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
         value: 20.19.0
