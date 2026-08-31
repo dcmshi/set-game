@@ -460,6 +460,24 @@ button {
   }
 }
 
+/* Endgame tension cue: deck is empty and only the last few cards remain. */
+.endgame-badge {
+  color: var(--gold);
+  border-color: var(--gold);
+  font-weight: 600;
+  animation: endgame-pulse 2.2s var(--ease-out) infinite;
+}
+
+@keyframes endgame-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--gold-soft);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
 .hint-btn {
   padding: 0.5rem 1.1rem;
   border-radius: 999px;

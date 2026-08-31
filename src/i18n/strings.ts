@@ -34,6 +34,7 @@ const en = {
 
   'hud.deck': 'Deck',
   'hud.sets': 'Sets',
+  'hud.finalCards': 'Final cards',
   'hud.mistakes': 'Mistakes',
   'hud.hint': 'Hint (+15s)',
 
@@ -157,6 +158,7 @@ const zh: Record<StringKey, string> = {
 
   'hud.deck': '牌堆',
   'hud.sets': '已找到',
+  'hud.finalCards': '最后的牌',
   'hud.mistakes': '错误',
   'hud.hint': '提示 (+15秒)',
 
@@ -277,6 +279,7 @@ const fr: Record<StringKey, string> = {
 
   'hud.deck': 'Pioche',
   'hud.sets': 'Sets trouvés',
+  'hud.finalCards': 'Dernières cartes',
   'hud.mistakes': 'Erreurs',
   'hud.hint': 'Indice (+15 s)',
 
@@ -397,6 +400,7 @@ const es: Record<StringKey, string> = {
 
   'hud.deck': 'Mazo',
   'hud.sets': 'Sets hallados',
+  'hud.finalCards': 'Últimas cartas',
   'hud.mistakes': 'Errores',
   'hud.hint': 'Pista (+15 s)',
 
@@ -516,6 +520,7 @@ const ja: Record<StringKey, string> = {
 
   'hud.deck': '山札',
   'hud.sets': '見つけたSet',
+  'hud.finalCards': '残りわずか',
   'hud.mistakes': 'ミス',
   'hud.hint': 'ヒント（+15秒）',
 

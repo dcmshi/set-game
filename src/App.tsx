@@ -194,6 +194,7 @@ export default function App({ seed }: { seed?: number }) {
             // Claimed cards are the only ones that leave play, so progress is
             // what's missing from the 81-card deck, in trios.
             setsFound={(81 - g.state.deck.length - g.state.board.length) / 3}
+            endgame={g.state.deck.length === 0 && g.state.board.length <= 6}
             onHint={g.hint}
             hintDisabled={g.state.pending !== null}
           />
