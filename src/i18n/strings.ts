@@ -41,6 +41,7 @@ const en = {
   'lang.groupAria': 'Language',
   'palette.aria': 'Colorblind-friendly colors',
   'theme.aria': 'Dark mode',
+  'sound.aria': 'Sound effects',
 
   'timer.aria': 'elapsed time',
 
@@ -163,6 +164,7 @@ const zh: Record<StringKey, string> = {
   'lang.groupAria': '语言',
   'palette.aria': '色盲友好配色',
   'theme.aria': '深色模式',
+  'sound.aria': '音效',
 
   'timer.aria': '已用时间',
   'card.hinted': '已提示',
@@ -282,6 +284,7 @@ const fr: Record<StringKey, string> = {
   'lang.groupAria': 'Langue',
   'palette.aria': 'Couleurs adaptées au daltonisme',
   'theme.aria': 'Mode sombre',
+  'sound.aria': 'Effets sonores',
 
   'timer.aria': 'temps écoulé',
   'card.hinted': 'indice',
@@ -401,6 +404,7 @@ const es: Record<StringKey, string> = {
   'lang.groupAria': 'Idioma',
   'palette.aria': 'Colores adaptados al daltonismo',
   'theme.aria': 'Modo oscuro',
+  'sound.aria': 'Efectos de sonido',
 
   'timer.aria': 'tiempo transcurrido',
   'card.hinted': 'pista',
@@ -519,6 +523,7 @@ const ja: Record<StringKey, string> = {
   'lang.groupAria': '言語',
   'palette.aria': '色覚サポート配色',
   'theme.aria': 'ダークモード',
+  'sound.aria': '効果音',
 
   'timer.aria': '経過時間',
   'card.hinted': 'ヒント',

@@ -12,8 +12,10 @@ import { LanguageToggle } from './components/LanguageToggle';
 import { SetSvgDefs } from './components/SetSvgDefs';
 import { PaletteToggle } from './components/PaletteToggle';
 import { ThemeToggle } from './components/ThemeToggle';
+import { SoundToggle } from './components/SoundToggle';
 import { MultiplayerApp } from './components/mp/MultiplayerApp';
 import { useT, type I18n } from './i18n/LanguageContext';
+import { playSelect, playSet, playError } from './lib/sound';
 import { formatTime } from './lib/format';
 
 const DEEP_LINK = (() => {
@@ -58,6 +60,26 @@ export default function App({ seed }: { seed?: number }) {
     if (n > lastExtraDeals.current) setDealNotice(n);
     lastExtraDeals.current = n;
   }, [g.state.extraDeals]);
+
+  // Sound effects (opt-in via SoundToggle): a blip per pick, a chime for a
+  // Set, a buzz for a miss. The third pick is judged immediately, so its own
+  // chime/buzz replaces the plain pick blip.
+  const prevSelected = useRef(0);
+  useEffect(() => {
+    const n = g.state.selected.length;
+    if (n > prevSelected.current && n < 3) playSelect();
+    prevSelected.current = n;
+  }, [g.state.selected]);
+
+  const lastPending = useRef(g.state.pending);
+  useEffect(() => {
+    const p = g.state.pending;
+    if (p && p !== lastPending.current) {
+      if (p.valid) playSet();
+      else playError();
+    }
+    lastPending.current = p;
+  }, [g.state.pending]);
 
   // Keyboard: H asks for a hint (arrows + Enter already cover the cards) and
   // Escape pauses. While paused, the PauseDialog owns Escape for resuming.
@@ -160,6 +182,7 @@ export default function App({ seed }: { seed?: number }) {
                 ?
               </button>
               <ThemeToggle />
+              <SoundToggle />
               <PaletteToggle />
               <LanguageToggle />
             </div>
